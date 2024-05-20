@@ -16,8 +16,8 @@ const App = () => {
 
   const fetchWeather = async (query) => {
     try {
-      setError(null);
-      setLoading(true);
+      setError(null); // Reset error state before fetching
+      setLoading(true); // Set loading to true before fetching
       const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
 
       const weatherResponse = await axios.get(
@@ -30,11 +30,15 @@ const App = () => {
 
       setLocation(`${weatherResponse.data.name}, ${weatherResponse.data.sys.country}`);
       setWeatherData(weatherResponse.data);
-      setForecastData(forecastResponse.data.list); // Pass full forecast data
-      setLoading(false);
+
+      // Extract 3-day forecast data
+      const forecast = forecastResponse.data.list.filter(item => item.dt_txt.includes("12:00:00")).slice(0, 3);
+      setForecastData(forecast);
+
+      setLoading(false); // Set loading to false after fetching
     } catch (err) {
       setError('Unable to fetch weather data. Please try again.');
-      setLoading(false);
+      setLoading(false); // Set loading to false if there is an error
     }
   };
 
