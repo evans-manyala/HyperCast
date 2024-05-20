@@ -12,10 +12,12 @@ const App = () => {
   const [weatherData, setWeatherData] = useState(null);
   const [forecastData, setForecastData] = useState([]);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const fetchWeather = async (query) => {
     try {
       setError(null); // Reset error state before fetching
+      setLoading(true); // Set loading to true before fetching
       const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
 
       const weatherResponse = await axios.get(
@@ -29,14 +31,17 @@ const App = () => {
       setLocation(`${weatherResponse.data.name}, ${weatherResponse.data.sys.country}`);
       setWeatherData(weatherResponse.data);
       setForecastData(forecastResponse.data.list.slice(0, 3)); // Simple 3-day forecast
+      setLoading(false); // Set loading to false after fetching
     } catch (err) {
       setError('Unable to fetch weather data. Please try again.');
+      setLoading(false); // Set loading to false if there is an error
     }
   };
 
   return (
-    <div className="App">
+    <div className="App container">
       <SearchBar onSearch={fetchWeather} />
+      {loading && <div className="spinner-border" role="status"><span className="sr-only">Loading...</span></div>}
       {error && <ErrorDisplay message={error} />}
       {weatherData && (
         <>
