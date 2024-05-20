@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
 
 const SearchBar = ({ onSearch }) => {
-  const [location, setLocation] = useState('');
+  const [query, setQuery] = useState('');
 
   const handleSearch = () => {
-    onSearch(location);
+    if (query.trim()) {
+      onSearch(query);
+      setQuery('');
+    }
   };
 
   return (
-    <div>
+    <div className="search-bar">
       <input
         type="text"
-        value={location}
-        onChange={(e) => setLocation(e.target.value)}
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
         placeholder="Enter city or zip code"
       />
       <button onClick={handleSearch}>Search</button>
