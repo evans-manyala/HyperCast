@@ -1,3 +1,5 @@
+// App.js
+
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import SearchBar from './components/SearchBar';
@@ -15,34 +17,19 @@ const App = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
-
-  const fetchWeather = useCallback(async (query, isCoords = false) => {
+  const fetchWeather = async (query) => {
     try {
       setError(null);
       setLoading(true);
+      const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
 
-      let weatherResponse;
-      let forecastResponse;
+      const weatherResponse = await axios.get(
+        `https://api.openweathermap.org/data/2.5/weather?q=${query}&units=metric&appid=${apiKey}`
+      );
 
-      if (isCoords) {
-        const { lat, lon } = query;
-        weatherResponse = await axios.get(
-          `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
-        );
-
-        forecastResponse = await axios.get(
-          `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
-        );
-      } else {
-        weatherResponse = await axios.get(
-          `https://api.openweathermap.org/data/2.5/weather?q=${query}&units=metric&appid=${apiKey}`
-        );
-
-        forecastResponse = await axios.get(
-          `https://api.openweathermap.org/data/2.5/forecast?q=${query}&units=metric&appid=${apiKey}`
-        );
-      }
+      const forecastResponse = await axios.get(
+        `https://api.openweathermap.org/data/2.5/forecast?q=${query}&units=metric&appid=${apiKey}`
+      );
 
       setLocation(`${weatherResponse.data.name}, ${weatherResponse.data.sys.country}`);
       setWeatherData(weatherResponse.data);
@@ -55,33 +42,60 @@ const App = () => {
       setError('Unable to fetch weather data. Please try again.');
       setLoading(false);
     }
-  }, [apiKey]);
+  };
+
+  const fetchDefaultLocationWeather = useCallback(() => {
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        try {
+          setError(null);
+          setLoading(true);
+          const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
+
+          const weatherResponse = await axios.get(
+            `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${apiKey}`
+          );
+
+          const forecastResponse = await axios.get(
+            `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&units=metric&appid=${apiKey}`
+          );
+
+          setLocation(`${weatherResponse.data.name}, ${weatherResponse.data.sys.country}`);
+          setWeatherData(weatherResponse.data);
+
+          const forecast = forecastResponse.data.list.filter(item => item.dt_txt.includes("12:00:00")).slice(0, 3);
+          setForecastData(forecast);
+
+          setLoading(false);
+        } catch (err) {
+          setError('Unable to fetch weather data. Please try again.');
+          setLoading(false);
+        }
+      },
+      (error) => {
+        setError('Unable to retrieve your location. Please search manually.');
+      }
+    );
+  }, []);
 
   useEffect(() => {
-    const fetchDefaultLocationWeather = () => {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          fetchWeather({ lat: latitude, lon: longitude }, true);
-        },
-        (error) => {
-          console.error('Error fetching default location:', error);
-          // Default to a specific location if geolocation fails (e.g., New York City)
-          fetchWeather({ lat: 40.7128, lon: -74.0060 }, true);
-        }
-      );
-    };
-
     fetchDefaultLocationWeather();
-    const intervalId = setInterval(fetchDefaultLocationWeather, 3600000); // Refresh every hour (3600000 ms)
-    return () => clearInterval(intervalId);
-  }, [fetchWeather]);
+  }, [fetchDefaultLocationWeather]);
 
   return (
     <div className="App container">
       <Header />
-      <SearchBar onSearch={(query) => fetchWeather(query, false)} />
-      {loading && <div className="spinner-border" role="status"><span className="sr-only">Loading...</span></div>}
+      <SearchBar onSearch={fetchWeather} />
+      {loading && (
+        <div className="loading-dots">
+          <span>.</span>
+          <span>.</span>
+          <span>.</span>
+          <span>.</span>
+          <span>.</span>
+        </div>
+      )}
       {error && <ErrorDisplay message={error} />}
       {weatherData && (
         <>
