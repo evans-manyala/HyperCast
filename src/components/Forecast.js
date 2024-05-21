@@ -2,7 +2,7 @@ import React from 'react';
 
 const Forecast = ({ forecast }) => {
   const formatDate = (dateString) => {
-    const options = { weekday: 'long' };
+    const options = { weekday: 'long', day: 'numeric', month: 'short' };
     const date = new Date(dateString);
     return date.toLocaleDateString(undefined, options);
   };
