@@ -1,5 +1,3 @@
-// App.js
-
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import SearchBar from './components/SearchBar';
@@ -18,6 +16,11 @@ const App = () => {
   const [loading, setLoading] = useState(false);
 
   const fetchWeather = async (query) => {
+    if (!query) {
+      setError('Location cannot be empty.');
+      return;
+    }
+
     try {
       setError(null);
       setLoading(true);
@@ -86,24 +89,26 @@ const App = () => {
   return (
     <div className="App container">
       <Header />
-      <SearchBar onSearch={fetchWeather} />
-      {loading && (
-        <div className="loading-dots">
-          <span>.</span>
-          <span>.</span>
-          <span>.</span>
-          <span>.</span>
-          <span>.</span>
-        </div>
-      )}
-      {error && <ErrorDisplay message={error} />}
-      {weatherData && (
-        <>
-          <LocationInfo location={location} />
-          <CurrentWeather weather={weatherData} />
-          <Forecast forecast={forecastData} />
-        </>
-      )}
+      <div className="main-content">
+        <SearchBar onSearch={fetchWeather} />
+        {error && <ErrorDisplay message={error} />}
+        {weatherData && <LocationInfo location={location} />}
+        {loading && (
+          <div className="loading-dots">
+            <span>.</span>
+            <span>.</span>
+            <span>.</span>
+            <span>.</span>
+            <span>.</span>
+          </div>
+        )}
+        {weatherData && (
+          <>
+            <CurrentWeather weather={weatherData} />
+            <Forecast forecast={forecastData} />
+          </>
+        )}
+      </div>
     </div>
   );
 };
