@@ -1,0 +1,24 @@
+.forecast {
+    margin-top: 20px;
+  }
+  
+  .forecast-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .forecast-table th, .forecast-table td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+  }
+  
+  .forecast-table th {
+    background-color: #f4f4f4;
+  }
+  
+  .forecast-table img {
+    width: 50px;
+    height: 50px;
+  }
+  

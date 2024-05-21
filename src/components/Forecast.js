@@ -1,25 +1,34 @@
 import React from 'react';
+import './Forecast.css';
 
 const Forecast = ({ forecast }) => {
-  const formatDate = (dateString) => {
-    const options = { weekday: 'long', day: 'numeric', month: 'short' };
+  const getDayName = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString(undefined, options);
+    return date.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short' });
   };
 
   return (
     <div className="forecast">
-      <h2>3-Day Forecast</h2>
-      <div className="forecast-list">
-        {forecast.map((day, index) => (
-          <div key={index} className="forecast-day">
-            <h3>{formatDate(day.dt_txt)}</h3>
-            <img src={`https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`} alt={day.weather[0].description} />
-            <p>{Math.round(day.main.temp)}°C</p>
-            <p>{day.weather[0].description}</p>
-          </div>
-        ))}
-      </div>
+      <table className="forecast-table">
+        <thead>
+          <tr>
+            {forecast.map((item, index) => (
+              <th key={index}>{getDayName(item.dt_txt)}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            {forecast.map((item, index) => (
+              <td key={index}>
+                <p>{Math.round(item.main.temp)}°C</p>
+                <p>{item.weather[0].description}</p>
+                <img src={`http://openweathermap.org/img/wn/${item.weather[0].icon}.png`} alt={item.weather[0].description} />
+              </td>
+            ))}
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 };

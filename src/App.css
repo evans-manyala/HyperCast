@@ -1,79 +1,16 @@
-.App {
-  text-align: center;
-  font-family: Arial, sans-serif;
-  padding: 20px;
-}
-
-.search-bar {
-  margin: 20px auto;
-  display: flex;
-  justify-content: center;
-  max-width: 600px;
-}
-
 .search-bar input {
-  width: 70%;
   padding: 10px;
-  font-size: 16px;
+  margin-right: 10px;
 }
 
 .search-bar button {
-  width: 30%;
   padding: 10px;
-  font-size: 16px;
+  background-color: #007bff; /* Blue color */
+  color: white;
+  border: none;
+  cursor: pointer;
 }
 
-.location-info, .current-weather, .forecast, .error-display {
-  margin: 20px auto;
-  max-width: 600px;
-  padding: 20px;
-  background: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.weather-details {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-}
-
-.weather-details img {
-  width: 80px;
-  height: 80px;
-}
-
-.forecast-list {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
-
-.forecast-day {
-  text-align: center;
-}
-
-.forecast-day img {
-  width: 50px;
-  height: 50px;
-}
-
-@media (max-width: 600px) {
-  .search-bar {
-    flex-direction: column;
-  }
-
-  .search-bar input,
-  .search-bar button {
-    width: 100%;
-    margin: 5px 0;
-  }
-
-  .weather-details {
-    flex-direction: column;
-  }
-
-  .forecast-list {
-    grid-template-columns: 1fr;
-  }
+.search-bar button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
 }
