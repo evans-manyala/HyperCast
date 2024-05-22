@@ -15,6 +15,7 @@ const App = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [useCurrentLocation, setUseCurrentLocation] = useState(false);
+  const [isDaytime, setIsDaytime] = useState(true);
 
   const fetchWeather = async (query) => {
     try {
@@ -35,6 +36,10 @@ const App = () => {
 
       const forecast = forecastResponse.data.list.filter(item => item.dt_txt.includes("12:00:00")).slice(0, 3);
       setForecastData(forecast);
+
+      const currentTime = new Date().getTime() / 1000;
+      const isDay = currentTime >= weatherResponse.data.sys.sunrise && currentTime <= weatherResponse.data.sys.sunset;
+      setIsDaytime(isDay);
 
       setLoading(false);
     } catch (err) {
@@ -66,6 +71,10 @@ const App = () => {
           const forecast = forecastResponse.data.list.filter(item => item.dt_txt.includes("12:00:00")).slice(0, 3);
           setForecastData(forecast);
 
+          const currentTime = new Date().getTime() / 1000;
+          const isDay = currentTime >= weatherResponse.data.sys.sunrise && currentTime <= weatherResponse.data.sys.sunset;
+          setIsDaytime(isDay);
+
           setLoading(false);
         } catch (err) {
           setError('Unable to fetch weather data. Please try again.');
@@ -80,7 +89,7 @@ const App = () => {
   }, [fetchDefaultLocationWeather]);
 
   return (
-    <div className="App container">
+    <div className={`App container ${isDaytime ? 'day-background' : 'night-background'}`}>
       <Header />
       <SearchBar onSearch={fetchWeather} useCurrentLocation={useCurrentLocation} setUseCurrentLocation={setUseCurrentLocation} />
       {loading && <div className="loading-dots">Loading</div>}

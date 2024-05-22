@@ -7,7 +7,7 @@ const SearchBar = ({ onSearch, useCurrentLocation, setUseCurrentLocation }) => {
 
   const handleSearch = () => {
     if (!query && !useCurrentLocation) {
-      setInputError('Please enter a location');
+      setInputError('Enter a location');
       return;
     }
     setInputError('');

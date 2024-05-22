@@ -1,0 +1,17 @@
+.current-weather {
+    text-align: center;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .weather-icon {
+    font-size: 100px;
+    margin-bottom: 20px;
+  }
+  
+  .current-weather p {
+    font-size: 1.2em;
+    margin: 5px 0;
+  }

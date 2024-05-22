@@ -1,29 +1,62 @@
 .App {
-  text-align: center;
-  font-family: 'Arial', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  color: #333;
 }
 
-.container {
-  padding: 20px;
+.header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header .logo {
+  width: 100px;
+}
+
+.header .use-location {
+  display: flex;
+  align-items: center;
+}
+
+.search-bar-container {
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 20px;
+}
+
+.day-background {
+  background: url('/day-background.jpg') no-repeat center center fixed;
+  background-size: cover;
+}
+
+.night-background {
+  background: url('/night-background.jpg') no-repeat center center fixed;
+  background-size: cover;
+}
+
+.forecast-container {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 900px;
 }
 
 .loading-dots {
-  display: inline-block;
-  width: 80px;
-  height: 80px;
+  font-size: 24px;
+  animation: blink 1.4s infinite both;
 }
 
-.loading-dots::after {
-  content: ".....";
-  display: inline-block;
-  animation: loading 1s steps(5, end) infinite;
-}
-
-@keyframes loading {
-  0% {
-    width: 0;
+@keyframes blink {
+  0%, 100% {
+    color: transparent;
   }
-  100% {
-    width: 100%;
+  50% {
+    color: #333;
   }
 }
