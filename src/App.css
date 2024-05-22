@@ -2,61 +2,54 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 100vh;
   padding: 20px;
-  color: #333;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
+.container {
   width: 100%;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.header .logo {
-  width: 100px;
-}
-
-.header .use-location {
-  display: flex;
-  align-items: center;
-}
-
-.search-bar-container {
-  width: 100%;
-  max-width: 500px;
-  margin-bottom: 20px;
-}
-
-.day-background {
-  background: url('/day-background.jpg') no-repeat center center fixed;
-  background-size: cover;
-}
-
-.night-background {
-  background: url('/night-background.jpg') no-repeat center center fixed;
-  background-size: cover;
-}
-
-.forecast-container {
-  display: flex;
-  justify-content: space-around;
-  width: 100%;
-  max-width: 900px;
+  max-width: 800px;
 }
 
 .loading-dots {
   font-size: 24px;
-  animation: blink 1.4s infinite both;
+  font-weight: bold;
+  color: #ffffff;
 }
 
-@keyframes blink {
-  0%, 100% {
-    color: transparent;
-  }
-  50% {
-    color: #333;
-  }
+.forecast-container {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.forecast-table {
+  width: 100%;
+  text-align: center;
+  border-collapse: collapse;
+}
+
+.forecast-table th,
+.forecast-table td {
+  padding: 10px;
+  border: 1px solid #dddddd;
+}
+
+.search-bar-container {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px 0 0 4px;
+}
+
+.search-button {
+  padding: 10px;
+  background-color: blue;
+  color: white;
+  border: 1px solid blue;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
 }

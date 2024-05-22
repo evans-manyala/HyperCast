@@ -1,45 +1,30 @@
 import React, { useState } from 'react';
 import './SearchBar.css';
 
-const SearchBar = ({ onSearch, useCurrentLocation, setUseCurrentLocation }) => {
+const SearchBar = ({ onSearch }) => {
   const [query, setQuery] = useState('');
-  const [inputError, setInputError] = useState('');
+  const [error, setError] = useState(false);
 
   const handleSearch = () => {
-    if (!query && !useCurrentLocation) {
-      setInputError('Enter a location');
-      return;
+    if (query.trim() === '') {
+      setError(true);
+    } else {
+      setError(false);
+      onSearch(query);
     }
-    setInputError('');
-    onSearch(query);
-  };
-
-  const handleCheckboxChange = () => {
-    setUseCurrentLocation(!useCurrentLocation);
-    setQuery('');
-    setInputError('');
   };
 
   return (
-    <div className="search-bar">
+    <div className="search-bar-container">
       <input
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder={inputError || "Enter location"}
-        className={`search-input ${inputError ? 'error' : ''}`}
-        disabled={useCurrentLocation}
+        placeholder={error ? 'Enter a location' : 'Search for a location...'}
+        className={`search-input ${error ? 'error shake' : ''}`}
+        onAnimationEnd={() => setError(false)}
       />
       <button onClick={handleSearch} className="search-button">Search</button>
-      <div className="location-checkbox">
-        <input
-          type="checkbox"
-          id="use-current-location"
-          checked={useCurrentLocation}
-          onChange={handleCheckboxChange}
-        />
-        <label htmlFor="use-current-location">Use Current Location</label>
-      </div>
     </div>
   );
 };
