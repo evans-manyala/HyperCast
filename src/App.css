@@ -1,99 +1,29 @@
-/* App.css */
-
-/* Add global styles */
-body {
-  font-family: Arial, sans-serif;
+.App {
+  text-align: center;
+  font-family: 'Arial', sans-serif;
 }
 
 .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   padding: 20px;
 }
 
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.header img {
-  max-width: 100px;
-  height: auto;
-}
-
-.main-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-}
-
-.weather-info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 600px;
-}
-
-.forecast {
-  margin-top: 20px;
-  width: 100%;
-}
-
-.forecast-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.forecast-table th,
-.forecast-table td {
-  border: 1px solid #ccc;
-  padding: 10px;
-  text-align: center;
-}
-
 .loading-dots {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-}
-
-.loading-dots span {
   display: inline-block;
-  font-size: 24px;
-  margin: 0 2px;
-  animation: dot-blink 1s infinite;
+  width: 80px;
+  height: 80px;
 }
 
-.loading-dots span:nth-child(2) {
-  animation-delay: 0.2s;
+.loading-dots::after {
+  content: ".....";
+  display: inline-block;
+  animation: loading 1s steps(5, end) infinite;
 }
 
-.loading-dots span:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-.loading-dots span:nth-child(4) {
-  animation-delay: 0.6s;
-}
-
-.loading-dots span:nth-child(5) {
-  animation-delay: 0.8s;
-}
-
-@keyframes dot-blink {
+@keyframes loading {
   0% {
-    opacity: 0.2;
-  }
-  20% {
-    opacity: 1;
+    width: 0;
   }
   100% {
-    opacity: 0.2;
+    width: 100%;
   }
 }

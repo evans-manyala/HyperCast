@@ -1,11 +1,11 @@
 import React from 'react';
 import logo from '../assets/logo.png';
+import './Header.css';
 
-
-const Header = ({ onSearch }) => {
+const Header = () => {
   return (
     <header className="header">
-      <img src={logo} alt="HyperCast Logo" />
+      <img src={logo} alt="HyperCast Logo" className="header-logo" />
     </header>
   );
 };

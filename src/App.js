@@ -14,13 +14,9 @@ const App = () => {
   const [forecastData, setForecastData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [useCurrentLocation, setUseCurrentLocation] = useState(false);
 
   const fetchWeather = async (query) => {
-    if (!query) {
-      setError('Location cannot be empty.');
-      return;
-    }
-
     try {
       setError(null);
       setLoading(true);
@@ -47,9 +43,9 @@ const App = () => {
     }
   };
 
-  const fetchDefaultLocationWeather = useCallback(() => {
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
+  const fetchDefaultLocationWeather = useCallback(async () => {
+    if (useCurrentLocation && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(async (position) => {
         const { latitude, longitude } = position.coords;
         try {
           setError(null);
@@ -75,12 +71,9 @@ const App = () => {
           setError('Unable to fetch weather data. Please try again.');
           setLoading(false);
         }
-      },
-      (error) => {
-        setError('Unable to retrieve your location. Please search manually.');
-      }
-    );
-  }, []);
+      });
+    }
+  }, [useCurrentLocation]);
 
   useEffect(() => {
     fetchDefaultLocationWeather();
@@ -89,26 +82,16 @@ const App = () => {
   return (
     <div className="App container">
       <Header />
-      <div className="main-content">
-        <SearchBar onSearch={fetchWeather} />
-        {error && <ErrorDisplay message={error} />}
-        {weatherData && <LocationInfo location={location} />}
-        {loading && (
-          <div className="loading-dots">
-            <span>.</span>
-            <span>.</span>
-            <span>.</span>
-            <span>.</span>
-            <span>.</span>
-          </div>
-        )}
-        {weatherData && (
-          <>
-            <CurrentWeather weather={weatherData} />
-            <Forecast forecast={forecastData} />
-          </>
-        )}
-      </div>
+      <SearchBar onSearch={fetchWeather} useCurrentLocation={useCurrentLocation} setUseCurrentLocation={setUseCurrentLocation} />
+      {loading && <div className="loading-dots">Loading</div>}
+      {error && <ErrorDisplay message={error} />}
+      {weatherData && (
+        <>
+          <LocationInfo location={location} />
+          <CurrentWeather weather={weatherData} />
+          <Forecast forecast={forecastData} />
+        </>
+      )}
     </div>
   );
 };
