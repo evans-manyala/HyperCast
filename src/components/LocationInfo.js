@@ -1,4 +1,5 @@
 import React from 'react';
+import './LocationInfo.css';
 
 const LocationInfo = ({ location }) => {
   return (

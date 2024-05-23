@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import axios from 'axios';
 import SearchBar from './components/SearchBar';
 import LocationInfo from './components/LocationInfo';
@@ -15,16 +15,21 @@ const App = () => {
   const [forecastData, setForecastData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [showDetailedForecast, setShowDetailedForecast] = useState(false);
-  const [defaultCities, setDefaultCities] = useState([]);
+  const [showDetailed, setShowDetailed] = useState(false);
 
-  const cities = ['Tokyo', 'Delhi', 'Shanghai', 'São Paulo', 'Mexico City', 'Cairo', 'Mumbai', 'Beijing', 'Dhaka', 'Osaka'];
+  const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
 
-  const fetchWeather = async (query) => {
+  const cities = useMemo(() => ['Nairobi', 'London', 'New York', 'Tokyo', 'Sydney', 'Paris', 'Berlin', 'Moscow'], []);
+
+  const getRandomCity = useCallback(() => {
+    const randomIndex = Math.floor(Math.random() * cities.length);
+    return cities[randomIndex];
+  }, [cities]);
+
+  const fetchWeather = useCallback(async (query) => {
     try {
       setError(null);
       setLoading(true);
-      const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
 
       const weatherResponse = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?q=${query}&units=metric&appid=${apiKey}`
@@ -37,7 +42,16 @@ const App = () => {
       setLocation(`${weatherResponse.data.name}, ${weatherResponse.data.sys.country}`);
       setWeatherData(weatherResponse.data);
 
-      const forecast = processForecastData(forecastResponse.data.list);
+      const forecast = forecastResponse.data.list.map(item => ({
+        date: item.dt_txt,
+        temp: item.main.temp,
+        weather: item.weather[0].main,
+        weatherIcon: item.weather[0].icon,
+        cloudCover: item.clouds.all,
+        windSpeed: item.wind.speed,
+        pressure: item.main.pressure,
+        humidity: item.main.humidity,
+      }));
       setForecastData(forecast);
 
       setLoading(false);
@@ -45,102 +59,52 @@ const App = () => {
       setError('Unable to fetch weather data. Please try again.');
       setLoading(false);
     }
-  };
-
-  const fetchRandomCitiesWeather = useCallback(async () => {
-    const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
-
-    try {
-      const randomCities = cities.sort(() => 0.5 - Math.random()).slice(0, 3);
-      const promises = randomCities.map(city =>
-        axios.get(
-          `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`
-        )
-      );
-
-      const responses = await Promise.all(promises);
-      const citiesData = responses.map(res => ({
-        name: res.data.name,
-        country: res.data.sys.country,
-        weather: res.data,
-      }));
-
-      setDefaultCities(citiesData);
-    } catch (err) {
-      console.error('Error fetching default cities weather data', err);
-    }
-  }, [cities]);
-
-  const processForecastData = (data) => {
-    const groupedData = data.reduce((acc, item) => {
-      const date = new Date(item.dt_txt).toLocaleDateString();
-      if (!acc[date]) acc[date] = { morning: null, afternoon: null, evening: null, night: null };
-
-      const hour = new Date(item.dt_txt).getHours();
-      if (hour >= 6 && hour < 12) acc[date].morning = item;
-      else if (hour >= 12 && hour < 18) acc[date].afternoon = item;
-      else if (hour >= 18 && hour < 24) acc[date].evening = item;
-      else if (hour >= 0 && hour < 6) acc[date].night = item;
-
-      return acc;
-    }, {});
-
-    return Object.keys(groupedData).map(date => ({ date, ...groupedData[date] }));
-  };
+  }, [apiKey]);
 
   useEffect(() => {
-    fetchRandomCitiesWeather();
-  }, [fetchRandomCitiesWeather]);
+    const fetchInitialWeather = async () => {
+      const city = getRandomCity();
+      await fetchWeather(city);
+    };
+
+    fetchInitialWeather();
+  }, [fetchWeather, getRandomCity]);
+
+  const handleSearch = async (query) => {
+    if (!query) {
+      setError('Please enter a location');
+      return;
+    }
+    await fetchWeather(query);
+  };
+
+  const handleShowDetailed = () => {
+    setShowDetailed(!showDetailed);
+  };
 
   return (
     <div className="App container">
       <Header />
-      <SearchBar onSearch={fetchWeather} />
+      <div className="search-container">
+        <SearchBar onSearch={handleSearch} error={error} />
+        <div className="checkbox-container">
+          <label>
+            <input type="checkbox" checked={showDetailed} onChange={handleShowDetailed} />
+            Show detailed forecast
+          </label>
+        </div>
+      </div>
       {loading && <div className="loading">Loading...</div>}
       {error && <ErrorDisplay message={error} />}
-      <div className="default-cities">
-        <h3>Default Cities Weather</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>City</th>
-              <th>Temperature</th>
-              <th>Condition</th>
-              <th>Wind Speed</th>
-              <th>Humidity</th>
-            </tr>
-          </thead>
-          <tbody>
-            {defaultCities.map(city => (
-              <tr key={city.name}>
-                <td>{city.name}, {city.country}</td>
-                <td>{city.weather.main.temp}°C</td>
-                <td>
-                  <img src={`icons/${city.weather.weather[0].icon}.png`} alt="Weather icon" /> {city.weather.weather[0].description}
-                </td>
-                <td>{city.weather.wind.speed} m/s</td>
-                <td>{city.weather.main.humidity}%</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
       {weatherData && (
         <>
           <LocationInfo location={location} />
           <CurrentWeather weather={weatherData} />
-          <SummaryForecast weather={forecastData[0]} />
-          <div>
-            <label>
-              <input
-                type="checkbox"
-                checked={showDetailedForecast}
-                onChange={() => setShowDetailedForecast(!showDetailedForecast)}
-              />
-              Show Detailed Forecast
-            </label>
-          </div>
-          {showDetailedForecast && <DetailedForecast forecast={forecastData.slice(0, 3)} />}
+          {showDetailed ? (
+            <DetailedForecast forecast={forecastData} />
+          ) : (
+            <SummaryForecast forecast={forecastData} />
+          )}
         </>
       )}
     </div>

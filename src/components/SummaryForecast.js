@@ -1,29 +1,60 @@
 import React from 'react';
 import './SummaryForecast.css';
 
-const SummaryForecast = ({ weather }) => (
-  <div className="summary-forecast">
-    <h3>Today's Weather</h3>
-    <div className="forecast-times">
-      {['morning', 'afternoon', 'night'].map((timeOfDay) => (
-        <div key={timeOfDay} className="forecast-time">
-          <h5>{timeOfDay.charAt(0).toUpperCase() + timeOfDay.slice(1)}</h5>
-          {weather[timeOfDay] ? (
-            <div>
-              <p>Temp: {weather[timeOfDay].main?.temp || 'N/A'}°C</p>
-              <p>Clouds: {weather[timeOfDay].clouds?.all || 'N/A'}%</p>
-              <p>Wind: {weather[timeOfDay].wind?.speed || 'N/A'} m/s</p>
-              <p>Pressure: {weather[timeOfDay].main?.pressure || 'N/A'} hPa</p>
-              <p>Humidity: {weather[timeOfDay].main?.humidity || 'N/A'}%</p>
-              <img src={`icons/${weather[timeOfDay].weather[0].icon}.png`} alt="Weather icon" />
-            </div>
-          ) : (
-            <p>No data</p>
-          )}
-        </div>
-      ))}
+const getPeriod = (dateString) => {
+  const hour = new Date(dateString).getHours();
+  if (hour < 12) return 'Morning';
+  if (hour < 18) return 'Afternoon';
+  return 'Night';
+};
+
+const filterForecast = (forecast) => {
+  const periods = ['Morning', 'Afternoon', 'Night'];
+  const filtered = forecast.reduce((acc, item) => {
+    const period = getPeriod(item.date);
+    if (!acc[period]) acc[period] = item;
+    return acc;
+  }, {});
+  return periods.map(period => filtered[period]).filter(Boolean);
+};
+
+const SummaryForecast = ({ forecast }) => {
+  const filteredForecast = filterForecast(forecast);
+
+  return (
+    <div className="summary-forecast">
+      <h2>Summary Forecast</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Period</th>
+            <th>Temp (°C)</th>
+            <th>Weather</th>
+            <th>Cloud Cover (%)</th>
+            <th>Wind Speed (m/s)</th>
+            <th>Pressure (hPa)</th>
+            <th>Humidity (%)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredForecast.map((item, index) => (
+            <tr key={index}>
+              <td>{getPeriod(item.date)}</td>
+              <td>{item.temp}</td>
+              <td>
+                <img src={`http://openweathermap.org/img/wn/${item.weatherIcon}.png`} alt={item.weather} />
+                {item.weather}
+              </td>
+              <td>{item.cloudCover}</td>
+              <td>{item.windSpeed}</td>
+              <td>{item.pressure}</td>
+              <td>{item.humidity}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
-  </div>
-);
+  );
+};
 
 export default SummaryForecast;

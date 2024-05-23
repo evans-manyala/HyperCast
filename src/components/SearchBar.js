@@ -1,30 +1,34 @@
 import React, { useState } from 'react';
 import './SearchBar.css';
 
-const SearchBar = ({ onSearch }) => {
-  const [query, setQuery] = useState('');
-  const [error, setError] = useState(false);
+const SearchBar = ({ onSearch, error }) => {
+  const [input, setInput] = useState('');
+
+  const handleChange = (e) => {
+    setInput(e.target.value);
+  };
 
   const handleSearch = () => {
-    if (query.trim() === '') {
-      setError(true);
-    } else {
-      setError(false);
-      onSearch(query);
+    onSearch(input);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
     }
   };
 
   return (
-    <div className="search-bar-container">
+    <div className="search-bar">
       <input
         type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder={error ? 'Enter a location' : 'Search for a location...'}
-        className={`search-input ${error ? 'error shake' : ''}`}
-        onAnimationEnd={() => setError(false)}
+        value={input}
+        onChange={handleChange}
+        onKeyPress={handleKeyPress}
+        className={error ? 'search-error' : ''}
+        placeholder={error ? 'Enter a location' : 'Search for a city...'}
       />
-      <button onClick={handleSearch} className="search-button">Search</button>
+      <button onClick={handleSearch}>Search</button>
     </div>
   );
 };

@@ -1,32 +1,41 @@
 import React from 'react';
 import './DetailedForecast.css';
 
-const DetailedForecast = ({ forecast }) => (
-  <div className="detailed-forecast">
-    <h3>Detailed Forecast</h3>
-    {forecast.map((day, index) => (
-      <div key={index} className="forecast-day">
-        <h4>{day.date}</h4>
-        {['morning', 'afternoon', 'evening', 'night'].map((timeOfDay) => (
-          <div key={timeOfDay} className="forecast-time">
-            <h5>{timeOfDay.charAt(0).toUpperCase() + timeOfDay.slice(1)}</h5>
-            {day[timeOfDay] ? (
-              <ul>
-                <li>Temperature: {day[timeOfDay].main?.temp || 'N/A'}°C</li>
-                <li>Cloud Cover: {day[timeOfDay].clouds?.all || 'N/A'}%</li>
-                <li>Wind Speed: {day[timeOfDay].wind?.speed || 'N/A'} m/s</li>
-                <li>Pressure: {day[timeOfDay].main?.pressure || 'N/A'} hPa</li>
-                <li>Humidity: {day[timeOfDay].main?.humidity || 'N/A'}%</li>
-                <img src={`icons/${day[timeOfDay].weather[0].icon}.png`} alt="Weather icon" />
-              </ul>
-            ) : (
-              <p>No data available</p>
-            )}
-          </div>
-        ))}
-      </div>
-    ))}
-  </div>
-);
+const DetailedForecast = ({ forecast }) => {
+  return (
+    <div className="detailed-forecast">
+      <h2>Detailed Forecast</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Date & Time</th>
+            <th>Temp (°C)</th>
+            <th>Weather</th>
+            <th>Cloud Cover (%)</th>
+            <th>Wind Speed (m/s)</th>
+            <th>Pressure (hPa)</th>
+            <th>Humidity (%)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {forecast.map((item, index) => (
+            <tr key={index}>
+              <td>{item.date}</td>
+              <td>{item.temp}</td>
+              <td>
+                <img src={`http://openweathermap.org/img/wn/${item.weatherIcon}.png`} alt={item.weather} />
+                {item.weather}
+              </td>
+              <td>{item.cloudCover}</td>
+              <td>{item.windSpeed}</td>
+              <td>{item.pressure}</td>
+              <td>{item.humidity}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
 
 export default DetailedForecast;

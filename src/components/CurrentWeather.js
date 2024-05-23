@@ -2,28 +2,21 @@ import React from 'react';
 import './CurrentWeather.css';
 
 const CurrentWeather = ({ weather }) => {
-  const getWeatherIcon = (weatherId) => {
-    if (weatherId >= 200 && weatherId < 300) return 'wi-thunderstorm';
-    if (weatherId >= 300 && weatherId < 500) return 'wi-sprinkle';
-    if (weatherId >= 500 && weatherId < 600) return 'wi-rain';
-    if (weatherId >= 600 && weatherId < 700) return 'wi-snow';
-    if (weatherId >= 700 && weatherId < 800) return 'wi-fog';
-    if (weatherId === 800) return 'wi-day-sunny';
-    if (weatherId > 800) return 'wi-cloudy';
-    return 'wi-na';
-  };
-
-  const weatherIconClass = getWeatherIcon(weather.weather[0].id);
-
+  const iconUrl = `http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`;
   return (
     <div className="current-weather">
       <h2>Current Weather</h2>
-      <div className="weather-icon">
-        <i className={`wi ${weatherIconClass}`} />
+      <div className="weather-info">
+        <div className="weather-icon">
+          <img src={iconUrl} alt={weather.weather[0].description} />
+        </div>
+        <div className="weather-details">
+          <p>{weather.weather[0].description}</p>
+          <p>Temperature: {weather.main.temp}°C</p>
+          <p>Humidity: {weather.main.humidity}%</p>
+          <p>Wind Speed: {weather.wind.speed} m/s</p>
+        </div>
       </div>
-      <p>Temperature: {weather.main.temp}°C</p>
-      <p>Feels Like: {weather.main.feels_like}°C</p>
-      <p>{weather.weather[0].description}</p>
     </div>
   );
 };
