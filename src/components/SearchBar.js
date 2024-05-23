@@ -4,10 +4,13 @@ import './SearchBar.css';
 const SearchBar = ({ onSearch }) => {
   const [query, setQuery] = useState('');
   const [error, setError] = useState(false);
+  const [shake, setShake] = useState(false);
 
   const handleSearch = () => {
     if (query.trim() === '') {
       setError(true);
+      setShake(true);
+      setTimeout(() => setShake(false), 500);
     } else {
       setError(false);
       onSearch(query);
@@ -28,7 +31,7 @@ const SearchBar = ({ onSearch }) => {
   };
 
   return (
-    <div className={`search-bar ${error ? 'shake' : ''}`}>
+    <div className={`search-bar ${shake ? 'shake' : ''}`}>
       <input
         type="text"
         placeholder={error ? 'Please enter a location' : 'Enter location'}
