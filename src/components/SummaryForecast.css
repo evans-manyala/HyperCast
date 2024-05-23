@@ -17,3 +17,8 @@
   .summary-forecast th {
     background-color: #f4f4f4;
   }
+  @media (min-width: 600px) {
+    .summary-forecast th, .summary-forecast td {
+      font-size: 1em;
+    }
+  }

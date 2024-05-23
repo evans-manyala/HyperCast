@@ -30,3 +30,13 @@
 .search-error {
   border-color: red;
 }
+@media (min-width: 600px) {
+  .search-bar {
+    flex-direction: row;
+  }
+
+  .search-bar button {
+    margin-left: 10px;
+    margin-top: 0;
+  }
+}
