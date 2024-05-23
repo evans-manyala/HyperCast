@@ -1,7 +1,5 @@
-/* DetailedForecast.css */
 .detailed-forecast {
-    text-align: center;
-    margin-bottom: 20px;
+    margin-top: 20px;
   }
   
   .forecast-day {
@@ -9,15 +7,24 @@
   }
   
   .forecast-time {
-    display: inline-block;
-    text-align: left;
-    margin: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    margin-bottom: 10px;
   }
   
   .forecast-time h5 {
-    margin: 0 0 10px 0;
+    margin-bottom: 5px;
+  }
+  
+  .forecast-time ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .forecast-time li {
+    margin-bottom: 5px;
+  }
+  
+  .forecast-time img {
+    width: 40px;
+    height: 40px;
   }
   

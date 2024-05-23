@@ -18,6 +18,8 @@ const App = () => {
   const [showDetailedForecast, setShowDetailedForecast] = useState(false);
   const [defaultCities, setDefaultCities] = useState([]);
 
+  const cities = ['Tokyo', 'Delhi', 'Shanghai', 'São Paulo', 'Mexico City', 'Cairo', 'Mumbai', 'Beijing', 'Dhaka', 'Osaka'];
+
   const fetchWeather = async (query) => {
     try {
       setError(null);
@@ -45,12 +47,12 @@ const App = () => {
     }
   };
 
-  const fetchDefaultCitiesWeather = useCallback(async () => {
-    const cities = ['Nairobi', 'London', 'New York'];
+  const fetchRandomCitiesWeather = useCallback(async () => {
     const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
 
     try {
-      const promises = cities.map(city =>
+      const randomCities = cities.sort(() => 0.5 - Math.random()).slice(0, 3);
+      const promises = randomCities.map(city =>
         axios.get(
           `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`
         )
@@ -67,7 +69,7 @@ const App = () => {
     } catch (err) {
       console.error('Error fetching default cities weather data', err);
     }
-  }, []);
+  }, [cities]);
 
   const processForecastData = (data) => {
     const groupedData = data.reduce((acc, item) => {
@@ -87,8 +89,8 @@ const App = () => {
   };
 
   useEffect(() => {
-    fetchDefaultCitiesWeather();
-  }, [fetchDefaultCitiesWeather]);
+    fetchRandomCitiesWeather();
+  }, [fetchRandomCitiesWeather]);
 
   return (
     <div className="App container">
@@ -113,7 +115,9 @@ const App = () => {
               <tr key={city.name}>
                 <td>{city.name}, {city.country}</td>
                 <td>{city.weather.main.temp}°C</td>
-                <td><img src={`icons/${city.weather.weather[0].icon}.png`} alt="Weather icon" /> {city.weather.weather[0].description}</td>
+                <td>
+                  <img src={`icons/${city.weather.weather[0].icon}.png`} alt="Weather icon" /> {city.weather.weather[0].description}
+                </td>
                 <td>{city.weather.wind.speed} m/s</td>
                 <td>{city.weather.main.humidity}%</td>
               </tr>
