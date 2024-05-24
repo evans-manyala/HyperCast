@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
 import './SearchBar.css';
 
-const SearchBar = ({ onSearch, error }) => {
-  const [input, setInput] = useState('');
-
-  const handleChange = (e) => {
-    setInput(e.target.value);
-  };
+const SearchBar = ({ onSearch }) => {
+  const [query, setQuery] = useState('');
+  const [error, setError] = useState(false);
+  const [shake, setShake] = useState(false);
 
   const handleSearch = () => {
-    onSearch(input);
+    if (query.trim() === '') {
+      setError(true);
+      setShake(true);
+      setTimeout(() => setShake(false), 500);
+    } else {
+      setError(false);
+      onSearch(query);
+    }
   };
 
   const handleKeyPress = (e) => {
@@ -18,15 +23,22 @@ const SearchBar = ({ onSearch, error }) => {
     }
   };
 
+  const handleChange = (e) => {
+    setQuery(e.target.value);
+    if (error) {
+      setError(false);
+    }
+  };
+
   return (
-    <div className="search-bar">
+    <div className={`search-bar ${shake ? 'shake' : ''}`}>
       <input
         type="text"
-        value={input}
+        placeholder={error ? 'Please enter a location' : 'Enter location'}
+        value={query}
         onChange={handleChange}
         onKeyPress={handleKeyPress}
         className={error ? 'search-error' : ''}
-        placeholder={error ? 'Enter a location' : 'Search for a city...'}
       />
       <button onClick={handleSearch}>Search</button>
     </div>
