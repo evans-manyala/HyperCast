@@ -55,3 +55,23 @@
     margin-top: 0;
   }
 }
+
+.react-autosuggest__suggestions-container {
+  border: 1px solid #ccc;
+  border-top: none;
+  max-height: 150px;
+  overflow-y: auto;
+  background: #fff;
+  position: absolute;
+  z-index: 2;
+  width: 300px;
+}
+
+.react-autosuggest__suggestion {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.react-autosuggest__suggestion--highlighted {
+  background: #ddd;
+}
