@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Autosuggest from 'react-autosuggest';
+import axios from 'axios';
 import './SearchBar.css';
 
 const SearchBar = ({ onSearch }) => {
@@ -8,56 +9,14 @@ const SearchBar = ({ onSearch }) => {
   const [error, setError] = useState(false);
   const [shake, setShake] = useState(false);
 
-  const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
-
-  const fetchSuggestions = async (value) => {
-    if (value.length >= 3) {
-      const response = await fetch(`https://api.openweathermap.org/data/2.5/find?q=${value}&type=like&sort=population&cnt=5&appid=${apiKey}`);
-      const data = await response.json();
-      if (data && data.list) {
-        const citySuggestions = data.list.map(city => ({
-          name: city.name,
-          country: city.sys.country
-        }));
-        setSuggestions(citySuggestions);
-      }
-    } else {
-      setSuggestions([]);
-    }
-  };
-
-  const onSuggestionsFetchRequested = ({ value }) => {
-    fetchSuggestions(value);
-  };
-
-  const onSuggestionsClearRequested = () => {
-    setSuggestions([]);
-  };
-
-  const getSuggestionValue = (suggestion) => `${suggestion.name}, ${suggestion.country}`;
-
-  const renderSuggestion = (suggestion) => (
-    <div>
-      {suggestion.name}, {suggestion.country}
-    </div>
-  );
-
-  const handleSearch = async () => {
+  const handleSearch = () => {
     if (query.trim() === '') {
       setError(true);
       setShake(true);
       setTimeout(() => setShake(false), 500);
     } else {
-      const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=${apiKey}`);
-      const data = await response.json();
-      if (data.cod === '404') {
-        setError(true);
-        setShake(true);
-        setTimeout(() => setShake(false), 500);
-      } else {
-        setError(false);
-        onSearch(query);
-      }
+      setError(false);
+      onSearch(query);
     }
   };
 
@@ -73,6 +32,36 @@ const SearchBar = ({ onSearch }) => {
       setError(false);
     }
   };
+
+  const onSuggestionsFetchRequested = async ({ value }) => {
+    console.log('Fetching suggestions for:', value); // Log the search query
+    try {
+      const response = await axios.get('https://api.opencagedata.com/geocode/v1/json', {
+        params: {
+          q: value,
+          key: process.env.REACT_APP_OPENCAGE_API_KEY,
+          limit: 5,
+        },
+      });
+      console.log('API Response:', response.data); // Log the API response
+      const citySuggestions = response.data.results.map(result => result.formatted);
+      setSuggestions(citySuggestions);
+    } catch (error) {
+      console.error('Error fetching city suggestions:', error); // Log any errors
+    }
+  };
+
+  const onSuggestionsClearRequested = () => {
+    setSuggestions([]);
+  };
+
+  const getSuggestionValue = (suggestion) => suggestion;
+
+  const renderSuggestion = (suggestion) => (
+    <div>
+      {suggestion}
+    </div>
+  );
 
   return (
     <div className={`search-bar ${shake ? 'shake' : ''}`}>
