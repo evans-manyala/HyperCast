@@ -23,3 +23,13 @@
   font-size: 1.2em;
   margin-top: 20px;
 }
+@media (min-width: 600px) {
+  .search-container {
+    flex-direction: row;
+  }
+  .checkbox-container {
+    margin-left: 10px;
+    margin-top: 0;
+  }
+}
+
