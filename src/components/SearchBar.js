@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Autosuggest from 'react-autosuggest';
 import axios from 'axios';
 import './SearchBar.css';
@@ -8,6 +8,11 @@ const SearchBar = ({ onSearch }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [error, setError] = useState(false);
   const [shake, setShake] = useState(false);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   const handleSearch = () => {
     if (query.trim() === '') {
@@ -34,7 +39,6 @@ const SearchBar = ({ onSearch }) => {
   };
 
   const onSuggestionsFetchRequested = async ({ value }) => {
-    console.log('Fetching suggestions for:', value); // Log the search query
     try {
       const response = await axios.get('https://api.opencagedata.com/geocode/v1/json', {
         params: {
@@ -43,11 +47,10 @@ const SearchBar = ({ onSearch }) => {
           limit: 5,
         },
       });
-      console.log('API Response:', response.data); // Log the API response
       const citySuggestions = response.data.results.map(result => result.formatted);
       setSuggestions(citySuggestions);
     } catch (error) {
-      console.error('Error fetching city suggestions:', error); // Log any errors
+      console.error('Error fetching city suggestions:', error);
     }
   };
 
@@ -76,7 +79,8 @@ const SearchBar = ({ onSearch }) => {
           value: query,
           onChange: handleChange,
           onKeyPress: handleKeyPress,
-          className: error ? 'search-error' : ''
+          className: error ? 'search-error' : '',
+          ref: inputRef
         }}
       />
       <button onClick={handleSearch}>Search</button>
