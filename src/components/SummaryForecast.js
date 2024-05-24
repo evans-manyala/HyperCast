@@ -24,35 +24,22 @@ const SummaryForecast = ({ forecast }) => {
   return (
     <div className="summary-forecast">
       <h2>Summary Forecast</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Period</th>
-            <th>Temp (°C)</th>
-            <th>Weather</th>
-            <th>Cloud Cover (%)</th>
-            <th>Wind Speed (m/s)</th>
-            <th>Pressure (hPa)</th>
-            <th>Humidity (%)</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredForecast.map((item, index) => (
-            <tr key={index}>
-              <td>{getPeriod(item.date)}</td>
-              <td>{item.temp}</td>
-              <td>
-                <img src={`http://openweathermap.org/img/wn/${item.weatherIcon}.png`} alt={item.weather} />
-                {item.weather}
-              </td>
-              <td>{item.cloudCover}</td>
-              <td>{item.windSpeed}</td>
-              <td>{item.pressure}</td>
-              <td>{item.humidity}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="forecast-container">
+        {filteredForecast.map((item, index) => (
+          <div key={index} className="forecast-slot">
+            <h3>{getPeriod(item.date)}</h3>
+            <p>{item.temp}°C</p>
+            <div className="weather-info">
+              <img src={`http://openweathermap.org/img/wn/${item.weatherIcon}.png`} alt={item.weather} />
+              <p>{item.weather}</p>
+            </div>
+            <p>Cloud Cover: {item.cloudCover}%</p>
+            <p>Wind: {item.windSpeed} m/s</p>
+            <p>Pressure: {item.pressure} hPa</p>
+            <p>Humidity: {item.humidity}%</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
