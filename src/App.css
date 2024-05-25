@@ -33,3 +33,30 @@
   }
 }
 
+body {
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
+
+body.dark {
+  background-color: #121212; /* Darker background */
+  color: #f2f2f2;
+}
+
+body.light {
+  background-color: #ffffff;
+  color: #212529; /* Darker text for contrast */
+}
+
+.theme-toggle button {
+  padding: 8px 16px;
+  background-color: #212529; /* Dark button for contrast */
+  color: #f2f2f2;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.theme-toggle button:hover {
+  background-color: #343a40; /* Slightly darker on hover */
+}

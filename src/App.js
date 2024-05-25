@@ -7,6 +7,8 @@ import SummaryForecast from './components/SummaryForecast';
 import DetailedForecast from './components/DetailedForecast';
 import ErrorDisplay from './components/ErrorDisplay';
 import Header from './components/Header';
+import useTheme from './hooks/useTheme';
+import ThemeToggleSwitch from './components/ThemeToggleSwitch';
 import './App.css';
 
 const App = () => {
@@ -16,6 +18,8 @@ const App = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showDetailed, setShowDetailed] = useState(false);
+
+  const [theme, setTheme] = useTheme();
 
   const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
 
@@ -82,15 +86,26 @@ const App = () => {
     setShowDetailed(!showDetailed);
   };
 
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  };
+
+  useEffect(() => {
+    document.body.className = theme;
+  }, [theme]);
+
   return (
-    <div className="App container">
+    <div className={`App container ${theme}`}>
       <Header />
+      <div className="theme-toggle">
+        <ThemeToggleSwitch theme={theme} toggleTheme={toggleTheme} />
+      </div>
       <div className="search-container">
         <SearchBar onSearch={handleSearch} error={error} />
         <div className="checkbox-container">
           <label>
             <input type="checkbox" checked={showDetailed} onChange={handleShowDetailed} />
-            Show detailed forecast
+            Show More
           </label>
         </div>
       </div>
