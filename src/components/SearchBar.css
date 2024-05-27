@@ -2,6 +2,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative; /* Ensure suggestions are positioned relative to the search bar */
+  width: 100%; /* Make the search bar take up the full width of its parent */
+  max-width: 600px; /* Set a max-width to prevent it from becoming too wide */
 }
 
 .search-bar input {
@@ -11,6 +14,7 @@
   border-radius: 4px;
   width: 100%;
   transition: border-color 0.3s ease;
+  box-sizing: border-box; /* Ensure padding is included in the element's total width */
 }
 
 .search-bar button {
@@ -64,7 +68,8 @@
   background: #fff;
   position: absolute;
   z-index: 2;
-  width: 100%;
+  width: 100%; /* Ensure the width matches the input */
+  box-sizing: border-box; /* Include padding in the element's total width */
 }
 
 .react-autosuggest__suggestion {
