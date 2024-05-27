@@ -23,7 +23,7 @@ const SummaryForecast = ({ forecast }) => {
 
   return (
     <div className="summary-forecast">
-      <h2>Weekly Summary Forecast</h2>
+      <h2>Weekly Expected Forecast</h2>
       <table>
         <thead>
           <tr>
