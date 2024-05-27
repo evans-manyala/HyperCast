@@ -8,7 +8,7 @@ import DetailedForecast from './components/DetailedForecast';
 import ErrorDisplay from './components/ErrorDisplay';
 import Header from './components/Header';
 import useTheme from './hooks/useTheme';
-import ThemeToggleSwitch from './components/ThemeToggleSwitch';
+import ToggleSwitch from './components/ToggleSwitch';
 import './App.css';
 
 const App = () => {
@@ -76,7 +76,7 @@ const App = () => {
 
   const handleSearch = async (query) => {
     if (!query) {
-      setError('Please enter a location');
+      setError('Please enter a city or location');
       return;
     }
     await fetchWeather(query);
@@ -97,17 +97,23 @@ const App = () => {
   return (
     <div className={`App container ${theme}`}>
       <Header />
-      <div className="theme-toggle">
-        <ThemeToggleSwitch theme={theme} toggleTheme={toggleTheme} />
+      <div className="toggle-container">
+        <ToggleSwitch
+          id="theme-toggle"
+          checked={theme === 'dark'}
+          onChange={toggleTheme}
+          label={theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+          showCaption={false}
+        />
+        <ToggleSwitch
+          id="detailed-toggle"
+          checked={showDetailed}
+          onChange={handleShowDetailed}
+          label="Detailed Forecast"
+        />
       </div>
       <div className="search-container">
         <SearchBar onSearch={handleSearch} error={error} />
-        <div className="checkbox-container">
-          <label>
-            <input type="checkbox" checked={showDetailed} onChange={handleShowDetailed} />
-            Show More
-          </label>
-        </div>
       </div>
       {loading && <div className="loading">Loading...</div>}
       {error && <ErrorDisplay message={error} />}

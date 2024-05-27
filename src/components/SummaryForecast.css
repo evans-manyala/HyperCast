@@ -52,3 +52,47 @@
     width: 80%;
   }
 }
+
+.summary-forecast table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0; /* Add margin to avoid sticking to other elements */
+}
+
+.summary-forecast th,
+.summary-forecast td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center; /* Center-align all text */
+  width: 14.28%; /* 7 columns, each taking up approximately 1/7 of the table width */
+}
+
+/* Center table headings */
+.summary-forecast thead th {
+  text-align: center;
+}
+
+/* Dark mode specific styles */
+body.dark .summary-forecast {
+  background-color: #2a2a2a;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+body.dark .forecast-slot {
+  background-color: #333;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+body.dark .summary-forecast th,
+body.dark .summary-forecast td {
+  color: #f2f2f2;
+  border-color: #444;
+}
+
+body.dark .summary-forecast th {
+  background-color: #444;
+}
+
+body.dark .summary-forecast td {
+  background-color: #3a3a3a;
+}

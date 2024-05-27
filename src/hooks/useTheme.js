@@ -1,22 +1,11 @@
-// src/hooks/useTheme.js
 import { useState, useEffect } from 'react';
 
 const useTheme = () => {
-  const [theme, setTheme] = useState(() => {
-    const storedTheme = localStorage.getItem('theme');
-    return storedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-  });
+  const [theme, setTheme] = useState('light'); // Default theme 'light'
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = (e) => setTheme(e.matches ? 'dark' : 'light');
-
-    mediaQuery.addEventListener('change', handleChange);
-    localStorage.setItem('theme', theme);
-
-    return () => {
-      mediaQuery.removeEventListener('change', handleChange);
-    };
+    const root = document.documentElement;
+    root.className = theme;
   }, [theme]);
 
   return [theme, setTheme];
