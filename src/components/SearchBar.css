@@ -1,50 +1,70 @@
 .search-bar {
-  position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
 }
 
 .search-bar input {
   padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px 0 0 4px;
-  outline: none;
-}
-
-.search-bar input.search-error {
-  border-color: red;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  transition: border-color 0.3s ease;
 }
 
 .search-bar button {
-  padding: 10px;
-  border: 1px solid #ddd;
+  padding: 10px 15px;
+  margin-top: 10px;
+  font-size: 1em;
   background-color: #007bff;
   color: white;
-  border-radius: 0 4px 4px 0;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .search-bar button:hover {
   background-color: #0056b3;
 }
 
-/* Autosuggest styles */
-.react-autosuggest__suggestions-container {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  z-index: 1000;
+.search-error {
+  border-color: red !important;
 }
 
-.react-autosuggest__suggestions-list {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-  background-color: white;
-  border: 1px solid #ddd;
-  max-height: 200px;
+.search-bar.shake input.search-error {
+  animation: shake 0.5s;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+@media (min-width: 600px) {
+  .search-bar {
+    flex-direction: row;
+  }
+
+  .search-bar button {
+    margin-left: 10px;
+    margin-top: 0;
+  }
+}
+
+.react-autosuggest__suggestions-container {
+  border: 1px solid #ccc;
+  border-top: none;
+  max-height: 150px;
   overflow-y: auto;
+  background: #fff;
+  position: absolute;
+  z-index: 2;
+  width: 100%;
 }
 
 .react-autosuggest__suggestion {
@@ -53,23 +73,10 @@
 }
 
 .react-autosuggest__suggestion--highlighted {
-  background-color: #f0f0f0;
+  background: #ddd;
 }
 
 /* Dark mode adjustments */
-body.dark .react-autosuggest__suggestions-list {
-  background-color: #333;
-  border: 1px solid #444;
-}
-
-body.dark .react-autosuggest__suggestion {
-  color: #f2f2f2;
-}
-
-body.dark .react-autosuggest__suggestion--highlighted {
-  background-color: #444;
-}
-
 body.dark .search-bar input {
   background-color: #333;
   color: #f2f2f2;
@@ -82,4 +89,17 @@ body.dark .search-bar button {
 
 body.dark .search-bar button:hover {
   background-color: #666;
+}
+
+body.dark .react-autosuggest__suggestions-container {
+  background-color: #333;
+  border: 1px solid #444;
+}
+
+body.dark .react-autosuggest__suggestion {
+  color: #f2f2f2;
+}
+
+body.dark .react-autosuggest__suggestion--highlighted {
+  background-color: #444;
 }
