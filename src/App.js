@@ -9,6 +9,7 @@ import ErrorDisplay from './components/ErrorDisplay';
 import Header from './components/Header';
 import useTheme from './hooks/useTheme';
 import ToggleSwitch from './components/ToggleSwitch';
+import './styles/styles.css';
 import './App.css';
 
 const App = () => {
@@ -60,7 +61,7 @@ const App = () => {
 
       setLoading(false);
     } catch (err) {
-      setError('Unable to fetch weather data. Please try again.');
+      setError('Unable to fetch weather data. Please try again or check name of the location.');
       setLoading(false);
     }
   }, [apiKey]);
