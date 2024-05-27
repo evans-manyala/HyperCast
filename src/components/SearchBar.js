@@ -47,7 +47,10 @@ const SearchBar = ({ onSearch }) => {
           limit: 5,
         },
       });
-      const citySuggestions = response.data.results.map(result => result.formatted);
+      const citySuggestions = response.data.results.map(result => ({
+        name: result.components.city || result.components.town || result.components.village || result.components.state || result.formatted,
+        country: result.components.country,
+      }));
       setSuggestions(citySuggestions);
     } catch (error) {
       console.error('Error fetching city suggestions:', error);
@@ -58,11 +61,11 @@ const SearchBar = ({ onSearch }) => {
     setSuggestions([]);
   };
 
-  const getSuggestionValue = (suggestion) => suggestion;
+  const getSuggestionValue = (suggestion) => `${suggestion.name}, ${suggestion.country}`;
 
   const renderSuggestion = (suggestion) => (
     <div>
-      {suggestion}
+      {suggestion.name}, {suggestion.country}
     </div>
   );
 
