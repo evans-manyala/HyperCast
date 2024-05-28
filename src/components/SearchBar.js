@@ -64,7 +64,7 @@ const SearchBar = ({ onSearch }) => {
   const getSuggestionValue = (suggestion) => `${suggestion.name}, ${suggestion.country}`;
 
   const renderSuggestion = (suggestion) => (
-    <div>
+    <div className="suggestion-content">
       {suggestion.name}, {suggestion.country}
     </div>
   );
@@ -84,6 +84,11 @@ const SearchBar = ({ onSearch }) => {
           onKeyPress: handleKeyPress,
           className: error ? 'search-error' : '',
           ref: inputRef
+        }}
+        theme={{
+          suggestionsContainer: 'react-autosuggest__suggestions-container',
+          suggestion: 'react-autosuggest__suggestion',
+          suggestionHighlighted: 'react-autosuggest__suggestion--highlighted',
         }}
       />
       <button onClick={handleSearch}>Search</button>

@@ -75,10 +75,18 @@
 .react-autosuggest__suggestion {
   padding: 10px;
   cursor: pointer;
+  white-space: pre-wrap; /* Ensure the text wraps */
+  word-wrap: break-word; /* Break long words to avoid overflow */
 }
 
 .react-autosuggest__suggestion--highlighted {
   background: #ddd;
+}
+
+/* New style for suggestion content */
+.suggestion-content {
+  white-space: pre-wrap; /* Ensure the text wraps */
+  word-wrap: break-word; /* Break long words to avoid overflow */
 }
 
 /* Dark mode adjustments */
