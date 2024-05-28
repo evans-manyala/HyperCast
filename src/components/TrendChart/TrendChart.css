@@ -1,0 +1,19 @@
+.trend-chart {
+    margin: 20px 0;
+  }
+  
+  .chart-container {
+    margin-bottom: 20px;
+  }
+  
+  canvas {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  body.dark .chart-container canvas {
+    background-color: #2a2a2a;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+  
