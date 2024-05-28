@@ -7,33 +7,56 @@ import './TrendChart.css';
 Chart.register(...registerables);
 
 const TrendChart = ({ forecast }) => {
-  const tempChartRef = useRef(null);
-  const windChartRef = useRef(null);
-  const humidityChartRef = useRef(null);
-  const pressureChartRef = useRef(null);
-  const cloudChartRef = useRef(null);
+  const chartRef = useRef(null);
 
   useEffect(() => {
-    const ctxTemp = tempChartRef.current.getContext('2d');
-    const ctxWind = windChartRef.current.getContext('2d');
-    const ctxHumidity = humidityChartRef.current.getContext('2d');
-    const ctxPressure = pressureChartRef.current.getContext('2d');
-    const ctxCloud = cloudChartRef.current.getContext('2d');
+    const ctx = chartRef.current.getContext('2d');
 
-    const createChart = (ctx, label, data, borderColor) => {
+    const createChart = () => {
       return new Chart(ctx, {
         type: 'line',
         data: {
           labels: forecast.map(item => new Date(item.date)),
-          datasets: [{
-            label,
-            data: forecast.map(item => item[data]),
-            fill: false,
-            borderColor,
-            tension: 0.1,
-          }]
+          datasets: [
+            {
+              label: 'Temperature (°C)',
+              data: forecast.map(item => item.temp),
+              borderColor: 'rgba(220, 20, 60, 1)',
+              fill: false,
+              tension: 0.1,
+            },
+            {
+              label: 'Wind Speed (m/s)',
+              data: forecast.map(item => item.windSpeed),
+              borderColor: 'rgba(0, 255, 0, 1)',
+              fill: false,
+              tension: 0.1,
+            },
+            {
+              label: 'Humidity (%)',
+              data: forecast.map(item => item.humidity),
+              borderColor: 'rgba(0, 255, 255, 1)',
+              fill: false,
+              tension: 0.1,
+            },
+            {
+              label: 'Pressure (hPa)',
+              data: forecast.map(item => item.pressure),
+              borderColor: 'rgba(0, 0, 129, 1)',
+              fill: false,
+              tension: 0.1,
+            },
+            {
+              label: 'Cloud Cover (%)',
+              data: forecast.map(item => item.cloudCover),
+              borderColor: 'rgba(0, 155, 175, 1)',
+              fill: false,
+              tension: 0.1,
+            },
+          ]
         },
         options: {
+          responsive: true,
           scales: {
             x: {
               type: 'time',
@@ -49,26 +72,32 @@ const TrendChart = ({ forecast }) => {
             y: {
               title: {
                 display: true,
-                text: label,
+                text: 'Value',
               },
             },
+          },
+          plugins: {
+            tooltip: {
+              mode: 'index',
+              intersect: false,
+            },
+            legend: {
+              position: 'top',
+            },
+          },
+          interaction: {
+            mode: 'nearest',
+            axis: 'x',
+            intersect: false,
           },
         }
       });
     };
 
-    const tempChart = createChart(ctxTemp, 'Temperature (°C)', 'temp', 'rgba(75, 192, 192, 1)');
-    const windChart = createChart(ctxWind, 'Wind Speed (m/s)', 'windSpeed', 'rgba(153, 102, 255, 1)');
-    const humidityChart = createChart(ctxHumidity, 'Humidity (%)', 'humidity', 'rgba(255, 159, 64, 1)');
-    const pressureChart = createChart(ctxPressure, 'Pressure (hPa)', 'pressure', 'rgba(54, 162, 235, 1)');
-    const cloudChart = createChart(ctxCloud, 'Cloud Cover (%)', 'cloudCover', 'rgba(255, 206, 86, 1)');
+    const chart = createChart();
 
     return () => {
-      tempChart.destroy();
-      windChart.destroy();
-      humidityChart.destroy();
-      pressureChart.destroy();
-      cloudChart.destroy();
+      chart.destroy();
     };
   }, [forecast]);
 
@@ -76,19 +105,7 @@ const TrendChart = ({ forecast }) => {
     <div className="trend-chart">
       <h3>Trend Charts</h3>
       <div className="chart-container">
-        <canvas ref={tempChartRef} />
-      </div>
-      <div className="chart-container">
-        <canvas ref={windChartRef} />
-      </div>
-      <div className="chart-container">
-        <canvas ref={humidityChartRef} />
-      </div>
-      <div className="chart-container">
-        <canvas ref={pressureChartRef} />
-      </div>
-      <div className="chart-container">
-        <canvas ref={cloudChartRef} />
+        <canvas ref={chartRef} />
       </div>
     </div>
   );
