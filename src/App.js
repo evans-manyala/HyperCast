@@ -4,7 +4,7 @@ import SearchBar from './components/SearchBar';
 import LocationInfo from './components/LocationInfo';
 import CurrentWeather from './components/CurrentWeather';
 import SummaryForecast from './components/SummaryForecast';
-import DetailedForecast from './components/DetailedForecast'; // Adjust path as necessary
+import DetailedForecast from './components/DetailedForecast';
 import ErrorDisplay from './components/ErrorDisplay';
 import Header from './components/Header';
 import useTheme from './hooks/useTheme';
