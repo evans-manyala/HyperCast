@@ -24,6 +24,10 @@ const TrendChart = ({ forecast }) => {
               borderColor: 'rgba(220, 20, 60, 1)',
               fill: false,
               tension: 0.1,
+              animation: {
+                duration: 1000,
+                easing: 'easeInOutQuart',
+              },
             },
             {
               label: 'Wind Speed (m/s)',
@@ -31,6 +35,10 @@ const TrendChart = ({ forecast }) => {
               borderColor: 'rgba(0, 255, 0, 1)',
               fill: false,
               tension: 0.1,
+              animation: {
+                duration: 1000,
+                easing: 'easeInOutQuart',
+              },
             },
             {
               label: 'Humidity (%)',
@@ -38,6 +46,10 @@ const TrendChart = ({ forecast }) => {
               borderColor: 'rgba(0, 255, 255, 1)',
               fill: false,
               tension: 0.1,
+              animation: {
+                duration: 1000,
+                easing: 'easeInOutQuart',
+              },
             },
             {
               label: 'Pressure (hPa)',
@@ -45,13 +57,21 @@ const TrendChart = ({ forecast }) => {
               borderColor: 'rgba(0, 0, 129, 1)',
               fill: false,
               tension: 0.1,
+              animation: {
+                duration: 1000,
+                easing: 'easeInOutQuart',
+              },
             },
             {
               label: 'Cloud Cover (%)',
               data: forecast.map(item => item.cloudCover),
-              borderColor: 'rgba(0, 155, 175, 1)',
+              borderColor: 'rgba(255, 100, 175, 1)',
               fill: false,
               tension: 0.1,
+              animation: {
+                duration: 1000,
+                easing: 'easeInOutQuart',
+              },
             },
           ]
         },
