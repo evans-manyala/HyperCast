@@ -1,0 +1,14 @@
+.trend-chart {
+    padding: 20px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+  }
+  
+  .chart-container {
+    margin: 20px 0;
+  }
+  
+  canvas {
+    background-color: var(--background-color);
+  }
+  
