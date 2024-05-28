@@ -65,7 +65,7 @@ const TrendChart = ({ forecast }) => {
             {
               label: 'Cloud Cover (%)',
               data: forecast.map(item => item.cloudCover),
-              borderColor: 'rgba(0, 155, 175, 1)',
+              borderColor: 'rgba(255, 100, 175, 1)',
               fill: false,
               tension: 0.1,
               animation: {
