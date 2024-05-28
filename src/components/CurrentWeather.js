@@ -8,6 +8,14 @@ const CurrentWeather = ({ weather }) => {
 
   const iconUrl = `http://openweathermap.org/img/wn/${weather.weather[0].icon}.png`;
 
+  const calculateLocalTime = (timezoneOffset) => {
+    const utcTime = new Date().getTime() + new Date().getTimezoneOffset() * 60000;
+    const localTime = new Date(utcTime + timezoneOffset * 1000);
+    return localTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit'});
+  };
+
+  const localTime = calculateLocalTime(weather.timezone);
+
   return (
     <div className="current-weather">
       <div className="current-weather-card">
@@ -36,6 +44,10 @@ const CurrentWeather = ({ weather }) => {
           <div>
             <span>{weather.main.pressure} hPa</span>
             <span>Pressure</span>
+          </div>
+          <div>
+            <span>{localTime}</span>
+            <span>Local Time</span>
           </div>
         </div>
       </div>
