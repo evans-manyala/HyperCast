@@ -23,61 +23,47 @@ const TrendChart = ({ forecast }) => {
               label: 'Temperature (°C)',
               data: forecast.map(item => item.temp),
               borderColor: 'rgba(220, 20, 60, 1)',
+              backgroundColor: 'rgba(220, 20, 60, 0.2)',
               fill: true,
               tension: 0.1,
-              animation: {
-                duration: 1000,
-                easing: 'easeInOutQuart',
-              },
             },
             {
               label: 'Wind Speed (m/s)',
               data: forecast.map(item => item.windSpeed),
               borderColor: 'rgba(0, 255, 0, 1)',
+              backgroundColor: 'rgba(0, 255, 0, 0.2)',
               fill: true,
               tension: 0.1,
-              animation: {
-                duration: 1000,
-                easing: 'easeInOutQuart',
-              },
             },
             {
               label: 'Humidity (%)',
               data: forecast.map(item => item.humidity),
               borderColor: 'rgba(0, 255, 255, 1)',
+              backgroundColor: 'rgba(0, 255, 255, 0.2)',
               fill: true,
               tension: 0.1,
-              animation: {
-                duration: 1000,
-                easing: 'easeInOutQuart',
-              },
             },
             {
               label: 'Pressure (hPa)',
               data: forecast.map(item => item.pressure),
               borderColor: 'rgba(0, 0, 129, 1)',
+              backgroundColor: 'rgba(0, 0, 129, 0.2)',
               fill: true,
               tension: 0.1,
-              animation: {
-                duration: 1000,
-                easing: 'easeInOutQuart',
-              },
             },
             {
               label: 'Cloud Cover (%)',
               data: forecast.map(item => item.cloudCover),
-              borderColor: 'rgba(255, 100, 175, 1)',
+              borderColor: 'rgba(0, 155, 175, 1)',
+              backgroundColor: 'rgba(0, 155, 175, 0.2)',
               fill: true,
               tension: 0.1,
-              animation: {
-                duration: 1000,
-                easing: 'easeInOutQuart',
-              },
             },
           ]
         },
         options: {
           responsive: true,
+          maintainAspectRatio: false, // Ensure the chart uses the full width of the container
           scales: {
             x: {
               type: 'time',
@@ -89,12 +75,18 @@ const TrendChart = ({ forecast }) => {
                 display: true,
                 text: 'Time',
               },
+              ticks: {
+                color: 'inherit' // Ensure ticks are visible in both light and dark modes
+              }
             },
             y: {
               title: {
                 display: true,
                 text: 'Value',
               },
+              ticks: {
+                color: 'inherit' // Ensure ticks are visible in both light and dark modes
+              }
             },
           },
           plugins: {
@@ -104,6 +96,9 @@ const TrendChart = ({ forecast }) => {
             },
             legend: {
               position: 'top',
+              labels: {
+                color: 'inherit' // Ensure legend text is visible in both light and dark modes
+              }
             },
             zoom: {
               pan: {
@@ -112,10 +107,10 @@ const TrendChart = ({ forecast }) => {
               },
               zoom: {
                 wheel: {
-                  enabled: false,
+                  enabled: false, // Disable zooming with mouse wheel
                 },
                 pinch: {
-                  enabled: false,
+                  enabled: false, // Disable zooming with pinch gesture
                 },
                 mode: 'x',
               },
