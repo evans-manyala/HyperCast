@@ -32,6 +32,6 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no -i /home/runner/.ssh/id_rsa ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
         cd /home/ubuntu/hypercast
-        docker build -t hypercast-app .
+        docker build -t hypercast-app
         docker run -d -p 3000:3000 --name hypercast-app hypercast-app
         EOF
