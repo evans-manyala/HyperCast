@@ -23,7 +23,7 @@ const TrendChart = ({ forecast }) => {
               label: 'Temperature (°C)',
               data: forecast.map(item => item.temp),
               borderColor: 'rgba(220, 20, 60, 1)',
-              fill: false,
+              fill: true,
               tension: 0.1,
               animation: {
                 duration: 1000,
@@ -34,7 +34,7 @@ const TrendChart = ({ forecast }) => {
               label: 'Wind Speed (m/s)',
               data: forecast.map(item => item.windSpeed),
               borderColor: 'rgba(0, 255, 0, 1)',
-              fill: false,
+              fill: true,
               tension: 0.1,
               animation: {
                 duration: 1000,
@@ -45,7 +45,7 @@ const TrendChart = ({ forecast }) => {
               label: 'Humidity (%)',
               data: forecast.map(item => item.humidity),
               borderColor: 'rgba(0, 255, 255, 1)',
-              fill: false,
+              fill: true,
               tension: 0.1,
               animation: {
                 duration: 1000,
@@ -56,7 +56,7 @@ const TrendChart = ({ forecast }) => {
               label: 'Pressure (hPa)',
               data: forecast.map(item => item.pressure),
               borderColor: 'rgba(0, 0, 129, 1)',
-              fill: false,
+              fill: true,
               tension: 0.1,
               animation: {
                 duration: 1000,
@@ -67,7 +67,7 @@ const TrendChart = ({ forecast }) => {
               label: 'Cloud Cover (%)',
               data: forecast.map(item => item.cloudCover),
               borderColor: 'rgba(255, 100, 175, 1)',
-              fill: false,
+              fill: true,
               tension: 0.1,
               animation: {
                 duration: 1000,
@@ -112,10 +112,10 @@ const TrendChart = ({ forecast }) => {
               },
               zoom: {
                 wheel: {
-                  enabled: true,
+                  enabled: false,
                 },
                 pinch: {
-                  enabled: true,
+                  enabled: false,
                 },
                 mode: 'x',
               },
