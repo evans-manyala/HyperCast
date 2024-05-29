@@ -1,14 +1,52 @@
 .trend-chart {
-    padding: 20px;
-    background-color: var(--background-color);
-    color: var(--text-color);
+    position: relative;
+    margin: 20px;
   }
   
   .chart-container {
-    margin: 20px 0;
+    max-height: 400px; /* Set a fixed height for the chart container */
+    overflow-y: auto;  /* Enable vertical scrolling */
+    overflow-x: auto;  /* Enable horizontal scrolling if necessary */
+    border: 1px solid #ddd;
+    padding: 10px;
+    background-color: #fff; /* Ensure background is white for better visibility */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
   
-  canvas {
-    background-color: var(--background-color);
+  .zoom-buttons {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .zoom-buttons button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .zoom-buttons button:hover {
+    background-color: #0056b3;
+  }
+  
+  body.dark .chart-container {
+    background-color: #2a2a2a;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  body.dark .zoom-buttons button {
+    background-color: #0056b3;
+    color: white;
+  }
+  
+  body.dark .zoom-buttons button:hover {
+    background-color: #003f7f;
   }
   

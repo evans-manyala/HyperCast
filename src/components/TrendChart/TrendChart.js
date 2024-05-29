@@ -1,10 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import { Chart, registerables } from 'chart.js';
 import 'chartjs-adapter-date-fns';
+import zoomPlugin from 'chartjs-plugin-zoom';
 import './TrendChart.css';
 
-// Register the necessary Chart.js components
-Chart.register(...registerables);
+// Register the necessary Chart.js components and plugins
+Chart.register(...registerables, zoomPlugin);
 
 const TrendChart = ({ forecast }) => {
   const chartRef = useRef(null);
@@ -104,6 +105,21 @@ const TrendChart = ({ forecast }) => {
             legend: {
               position: 'top',
             },
+            zoom: {
+              pan: {
+                enabled: true,
+                mode: 'x',
+              },
+              zoom: {
+                wheel: {
+                  enabled: true,
+                },
+                pinch: {
+                  enabled: true,
+                },
+                mode: 'x',
+              },
+            },
           },
           interaction: {
             mode: 'nearest',
@@ -115,17 +131,34 @@ const TrendChart = ({ forecast }) => {
     };
 
     const chart = createChart();
+    chartRef.current.chartInstance = chart;
 
     return () => {
       chart.destroy();
     };
   }, [forecast]);
 
+  const handleZoomIn = () => {
+    if (chartRef.current && chartRef.current.chartInstance) {
+      chartRef.current.chartInstance.zoom(1.1);
+    }
+  };
+
+  const handleZoomOut = () => {
+    if (chartRef.current && chartRef.current.chartInstance) {
+      chartRef.current.chartInstance.zoom(0.9);
+    }
+  };
+
   return (
     <div className="trend-chart">
       <h3>Trend Charts</h3>
       <div className="chart-container">
         <canvas ref={chartRef} />
+      </div>
+      <div className="zoom-buttons">
+        <button onClick={handleZoomIn}>+</button>
+        <button onClick={handleZoomOut}>-</button>
       </div>
     </div>
   );
