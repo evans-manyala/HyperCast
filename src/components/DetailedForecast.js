@@ -10,6 +10,7 @@ const getTime = (dateString) => {
 const DetailedForecast = ({ forecast }) => {
   const [viewDays, setViewDays] = useState(1);
   const [currentDay, setCurrentDay] = useState('');
+  const [fadeClass, setFadeClass] = useState('fade-in');
   const containerRef = useRef(null);
   const forecastRef = useRef([]);
 
@@ -21,11 +22,21 @@ const DetailedForecast = ({ forecast }) => {
       const container = containerRef.current;
       const scrollPosition = container.scrollTop;
 
+      let newDay = currentDay;
+
       for (let i = 0; i < forecastRef.current.length; i++) {
         const dayElement = forecastRef.current[i];
         if (dayElement && dayElement.offsetTop <= scrollPosition + 100) {
-          setCurrentDay(dayElement.dataset.day);
+          newDay = dayElement.dataset.day;
         }
+      }
+
+      if (newDay !== currentDay) {
+        setFadeClass('fade-out');
+        setTimeout(() => {
+          setCurrentDay(newDay);
+          setFadeClass('fade-in');
+        }, 500);
       }
     };
 
@@ -35,11 +46,18 @@ const DetailedForecast = ({ forecast }) => {
     return () => {
       container.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [currentDay]);
+
+  useEffect(() => {
+    // Set the initial day when component mounts
+    if (days.length > 0) {
+      setCurrentDay(new Date(days[0]).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' }));
+    }
+  }, [viewDays, days]);
 
   return (
     <div className="detailed-forecast">
-      <div className="forecast-header">
+      <div className={`forecast-header ${fadeClass}`}>
         <h2>{currentDay || 'Detailed Forecast'}</h2>
       </div>
       <div className="forecast-buttons">
