@@ -43,10 +43,14 @@ jobs:
         env:
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
+          REACT_APP_WEATHER_API_KEY: ${{ secrets.REACT_APP_WEATHER_API_KEY }}
+          REACT_APP_GEOCODE_API_KEY: ${{ secrets.REACT_APP_GEOCODE_API_KEY }}
         run: |
           scp -o StrictHostKeyChecking=no -i key.pem docker-compose.yml $EC2_USER@$EC2_HOST:/home/ubuntu/hypercast/
           ssh -o StrictHostKeyChecking=no -i key.pem $EC2_USER@$EC2_HOST << 'EOF'
             cd /home/ubuntu/hypercast
+            export REACT_APP_WEATHER_API_KEY=${REACT_APP_WEATHER_API_KEY}
+            export REACT_APP_GEOCODE_API_KEY=${REACT_APP_GEOCODE_API_KEY}
             docker-compose down
             docker-compose up -d
           EOF

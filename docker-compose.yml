@@ -1,6 +1,10 @@
 version: "3"
 services:
-  hypercast:
+  web:
     image: evansmanyala/hypercast:latest
     ports:
-      - "8080:80"
+      - "8080:8080"
+    environment:
+      - NODE_ENV=production
+      - REACT_APP_WEATHER_API_KEY=${REACT_APP_WEATHER_API_KEY}
+      - REACT_APP_GEOCODE_API_KEY=${REACT_APP_GEOCODE_API_KEY}
