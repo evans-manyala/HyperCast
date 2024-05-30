@@ -3,4 +3,4 @@ services:
   hypercast:
     image: evansmanyala/hypercast:latest
     ports:
-      - "80:80"
+      - "8080:80"
