@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -19,7 +19,7 @@ jobs:
           node-version: "18"
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build the project
         run: npm run build
@@ -29,23 +29,24 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t evansmanyala/hypercast:latest .
-          docker push evansmanyala/hypercast:latest
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/hypercast:latest .
+          docker push ${{ secrets.DOCKER_USERNAME }}/hypercast:latest
+
+      - name: Prepare SSH key
+        run: echo "${{ secrets.EC2_SSH_KEY }}" > key.pem
+        shell: bash
+
+      - name: Set permissions for SSH key
+        run: chmod 600 key.pem
 
       - name: Deploy to EC2
         env:
-          EC2_USER: ubuntu
+          EC2_USER: ${{ secrets.EC2_USER }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
-          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
         run: |
-          echo "${{ env.EC2_SSH_KEY }}" > key.pem
-          chmod 600 key.pem
-          ssh -o StrictHostKeyChecking=no -i key.pem $EC2_USER@$EC2_HOST << 'EOF'
-            mkdir -p /home/ubuntu/hypercast
-          EOF
-          scp -o StrictHostKeyChecking=no -i key.pem -r * $EC2_USER@$EC2_HOST:/home/ubuntu/hypercast
+          scp -o StrictHostKeyChecking=no -i key.pem docker-compose.yml $EC2_USER@$EC2_HOST:/home/ubuntu/hypercast/
           ssh -o StrictHostKeyChecking=no -i key.pem $EC2_USER@$EC2_HOST << 'EOF'
             cd /home/ubuntu/hypercast
             docker-compose down
-            docker-compose up -d --build
+            docker-compose up -d
           EOF
