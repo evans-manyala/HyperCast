@@ -40,6 +40,9 @@ jobs:
         run: |
           echo "${{ env.EC2_SSH_KEY }}" > key.pem
           chmod 600 key.pem
+          ssh -o StrictHostKeyChecking=no -i key.pem $EC2_USER@$EC2_HOST << 'EOF'
+            mkdir -p /home/ubuntu/hypercast
+          EOF
           scp -o StrictHostKeyChecking=no -i key.pem -r * $EC2_USER@$EC2_HOST:/home/ubuntu/hypercast
           ssh -o StrictHostKeyChecking=no -i key.pem $EC2_USER@$EC2_HOST << 'EOF'
             cd /home/ubuntu/hypercast
