@@ -40,14 +40,14 @@ const SearchBar = ({ onSearch }) => {
 
   const onSuggestionsFetchRequested = async ({ value }) => {
     try {
-      const response = await axios.get('https://api.opencagedata.com/geocode/v1/json', {
+      const geocodeApiKey = await axios.get('https://api.opencagedata.com/geocode/v1/json', {
         params: {
           q: value,
           key: process.env.REACT_APP_OPENCAGE_API_KEY,
           limit: 5,
         },
       });
-      const citySuggestions = response.data.results.map(result => ({
+      const citySuggestions = geocodeApiKey.data.results.map(result => ({
         name: result.components.city || result.components.town || result.components.village || result.components.state || result.formatted,
         country: result.components.country,
       }));

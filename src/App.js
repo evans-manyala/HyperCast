@@ -22,7 +22,7 @@ const App = () => {
 
   const [theme, setTheme] = useTheme();
 
-  const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
+  const weatherApiKey = process.env.REACT_APP_WEATHER_API_KEY;
 
   const cities = useMemo(() => ['Nairobi', 'London', 'New York', 'Tokyo', 'Sydney', 'Paris', 'Berlin', 'Moscow'], []);
 
@@ -37,11 +37,11 @@ const App = () => {
       setLoading(true);
 
       const weatherResponse = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${query}&units=metric&appid=${apiKey}`
+        `https://api.openweathermap.org/data/2.5/weather?q=${query}&units=metric&appid=${weatherApiKey}`
       );
 
       const forecastResponse = await axios.get(
-        `https://api.openweathermap.org/data/2.5/forecast?q=${query}&units=metric&appid=${apiKey}`
+        `https://api.openweathermap.org/data/2.5/forecast?q=${query}&units=metric&appid=${weatherApiKey}`
       );
 
       setLocation(`${weatherResponse.data.name}, ${weatherResponse.data.sys.country}`);
@@ -64,7 +64,7 @@ const App = () => {
       setError('Unable to fetch weather data. Please try again or check name of the location.');
       setLoading(false);
     }
-  }, [apiKey]);
+  }, [weatherApiKey]);
 
   useEffect(() => {
     const fetchInitialWeather = async () => {
