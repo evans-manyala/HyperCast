@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import SearchBar from './components/SearchBar';
 import LocationInfo from './components/LocationInfo';
@@ -7,19 +8,20 @@ import SummaryForecast from './components/SummaryForecast';
 import DetailedForecast from './components/DetailedForecast';
 import ErrorDisplay from './components/ErrorDisplay';
 import Header from './components/Header';
+import LandingPage from './components/LandingPage';
+import SplashScreen from './components/SplashScreen';
 import useTheme from './hooks/useTheme';
 import ToggleSwitch from './components/ToggleSwitch';
 import './styles/styles.css';
 import './App.css';
 
-const App = () => {
+const AppContent = () => {
   const [location, setLocation] = useState('');
   const [weatherData, setWeatherData] = useState(null);
   const [forecastData, setForecastData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showDetailed, setShowDetailed] = useState(false);
-
   const [theme, setTheme] = useTheme();
 
   const weatherApiKey = process.env.REACT_APP_WEATHER_API_KEY;
@@ -130,6 +132,34 @@ const App = () => {
         </>
       )}
     </div>
+  );
+};
+
+const App = () => {
+  const [showSplashScreen, setShowSplashScreen] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSplashScreen(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <Router>
+      <Routes>
+        {showSplashScreen ? (
+          <Route path="/" element={<SplashScreen />} />
+        ) : (
+          <>
+            <Route path="/" element={<Navigate to="/landing" />} />
+            <Route path="/landing" element={<LandingPage />} />
+            <Route path="/app" element={<AppContent />} />
+          </>
+        )}
+      </Routes>
+    </Router>
   );
 };
 
