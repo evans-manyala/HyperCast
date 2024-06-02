@@ -14,14 +14,14 @@ const LandingPage = () => {
         <img src={logo} alt="HyperCast Logo" className="landing-logo" />
       </header>
       <main className="landing-main">
-        <h1>Welcome to HyperCast</h1>
+        <h1>Welcome</h1>
         <p>
           HyperCast is your reliable source for accurate and detailed weather forecasts. Stay informed about the latest weather updates and plan your activities accordingly.
         </p>
 
         {/* Project Inspiration */}
         <section className="project-inspiration">
-          <h2>The Inspiration Behind HyperCast</h2>
+          <h2>The Inspiration</h2>
           <p>
             The idea for HyperCast was born out of my personal frustration with existing weather apps.
             Many were cluttered, inaccurate, or lacked the level of detail I needed to plan my day or trips effectively.
@@ -73,7 +73,7 @@ const LandingPage = () => {
         {/* Call to Action */}
         <div className="landing-actions">
           <Link to="/app" className="cta-button">
-            Get Started with HyperCast
+            Get Started
           </Link>
           <a
             href="https://github.com/evans-manyala"
@@ -81,7 +81,7 @@ const LandingPage = () => {
             rel="noopener noreferrer"
             className="github-link"
           >
-            <img src={github} alt="GitHub" className="github-logo" /> View Code on GitHub
+            <img src={github} alt="GitHub" className="github-logo" /> Code
           </a>
         </div>
       </main>
