@@ -1,83 +1,136 @@
 .landing-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-color: #f0f0f0;
-    text-align: center;
-    padding: 20px;
-  }
-  
-  .landing-header {
-    margin-bottom: 20px;
-  }
-  
-  .landing-logo {
-    width: 150px;
-    height: auto;
-  }
-  
-  .landing-main {
-    max-width: 800px;
-  }
-  
-  .landing-main h1 {
-    font-size: 3em;
-    margin-bottom: 20px;
-  }
-  
-  .landing-main p {
-    font-size: 1.2em;
-    margin-bottom: 20px;
-  }
-  
-  .developer-info h2 {
-    font-size: 2em;
-    margin-top: 20px;
-  }
-  
-  .developer-info p {
-    font-size: 1.1em;
-    margin-bottom: 20px;
-  }
-  
-  .landing-actions {
-    margin-top: 20px;
-  }
-  
-  .cta-button {
-    display: inline-block;
-    padding: 10px 20px;
-    font-size: 1.2em;
-    color: white;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-decoration: none;
-    margin-right: 10px;
-  }
-  
-  .cta-button:hover {
-    background-color: #0056b3;
-  }
-  
-  .github-link {
-    display: inline-flex;
-    align-items: center;
-    font-size: 1.2em;
-    color: #333;
-    text-decoration: none;
-  }
-  
-  .github-link:hover {
-    color: #000;
-  }
-  
-  .github-logo {
-    width: 30px;
-    height: auto;
-    margin-right: 8px;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f0f0f0;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.landing-header {
+  margin-bottom: 40px;
+}
+
+.landing-logo {
+  width: 300px;
+  height: auto;
+}
+
+.landing-main {
+  max-width: 900px;
+  width: 100%;
+}
+
+.landing-main h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.landing-main p {
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+  color: #666;
+}
+
+.project-inspiration,
+.landing-features {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.project-inspiration h2,
+.landing-features h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.feature {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.feature-icon {
+  width: 64px;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+.feature h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #007bff;
+}
+
+.feature p {
+  font-size: 1rem;
+  color: #666;
+}
+
+.developer-info h2 {
+  font-size: 2rem;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.developer-info p {
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.landing-actions {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.cta-button {
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 1.2rem;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.cta-button:hover {
+  background-color: #0056b3;
+}
+
+.github-link {
+  display: inline-flex;
+  align-items: center;
+  font-size: 1.2rem;
+  color: #333;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.github-link:hover {
+  color: #000;
+}
+
+.github-logo {
+  width: 30px;
+  height: auto;
+  margin-right: 8px;
+}
