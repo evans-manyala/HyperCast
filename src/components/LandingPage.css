@@ -81,3 +81,24 @@
     margin-right: 8px;
   }
   
+
+  .project-inspiration,
+.landing-features {
+  margin-top: 2rem;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive columns */
+  gap: 1.5rem;
+}
+
+.feature {
+  text-align: center; /* Center content within each feature box */
+}
+
+.feature-icon {
+  width: 64px; /* Adjust icon size as needed */
+  height: auto;
+  margin-bottom: 1rem; 
+}
