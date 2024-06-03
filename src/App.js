@@ -19,8 +19,7 @@ const AppContent = () => {
   const [location, setLocation] = useState('');
   const [weatherData, setWeatherData] = useState(null);
   const [forecastData, setForecastData] = useState([]);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState({ error: null, loading: false });
   const [showDetailed, setShowDetailed] = useState(false);
   const [theme, setTheme] = useTheme();
 
@@ -34,17 +33,12 @@ const AppContent = () => {
   }, [cities]);
 
   const fetchWeather = useCallback(async (query) => {
+    setStatus({ error: null, loading: true });
     try {
-      setError(null);
-      setLoading(true);
-
-      const weatherResponse = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${query}&units=metric&appid=${weatherApiKey}`
-      );
-
-      const forecastResponse = await axios.get(
-        `https://api.openweathermap.org/data/2.5/forecast?q=${query}&units=metric&appid=${weatherApiKey}`
-      );
+      const [weatherResponse, forecastResponse] = await Promise.all([
+        axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${query}&units=metric&appid=${weatherApiKey}`),
+        axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${query}&units=metric&appid=${weatherApiKey}`),
+      ]);
 
       setLocation(`${weatherResponse.data.name}, ${weatherResponse.data.sys.country}`);
       setWeatherData(weatherResponse.data);
@@ -60,11 +54,10 @@ const AppContent = () => {
         humidity: item.main.humidity,
       }));
       setForecastData(forecast);
-
-      setLoading(false);
     } catch (err) {
-      setError('Unable to fetch weather data. Please try again or check name of the location.');
-      setLoading(false);
+      setStatus({ error: 'Unable to fetch weather data. Please try again or check name of the location.', loading: false });
+    } finally {
+      setStatus(prev => ({ ...prev, loading: false }));
     }
   }, [weatherApiKey]);
 
@@ -73,13 +66,12 @@ const AppContent = () => {
       const city = getRandomCity();
       await fetchWeather(city);
     };
-
     fetchInitialWeather();
   }, [fetchWeather, getRandomCity]);
 
   const handleSearch = async (query) => {
     if (!query) {
-      setError('Please enter a city or location');
+      setStatus({ error: 'Please enter a city or location', loading: false });
       return;
     }
     await fetchWeather(query);
@@ -116,10 +108,10 @@ const AppContent = () => {
         />
       </div>
       <div className="search-container">
-        <SearchBar onSearch={handleSearch} error={error} />
+        <SearchBar onSearch={handleSearch} error={status.error} />
       </div>
-      {loading && <div className="loading">Loading...</div>}
-      {error && <ErrorDisplay message={error} />}
+      {status.loading && <div className="loading">Loading...</div>}
+      {status.error && <ErrorDisplay message={status.error} />}
       {weatherData && (
         <>
           <LocationInfo location={location} />

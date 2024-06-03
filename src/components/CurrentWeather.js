@@ -25,7 +25,6 @@ const CurrentWeather = ({ weather }) => {
           alt={weather.weather[0].description} 
           onError={(e) => {
             e.target.onerror = null; 
-            e.target.src = '/path/to/default/icon.png'; // Path to your default/fallback icon
           }}
         />
         <div className="current-weather-details">
