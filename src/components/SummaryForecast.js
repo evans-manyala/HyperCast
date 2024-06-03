@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import './SummaryForecast.css';
 
 const getDayOfWeek = (dateString) => {
@@ -8,18 +8,18 @@ const getDayOfWeek = (dateString) => {
 };
 
 const filterWeeklyForecast = (forecast) => {
-  const daysOfWeek = forecast.reduce((acc, item) => {
+  const daysOfWeek = {};
+  forecast.forEach((item) => {
     const day = getDayOfWeek(item.date);
-    if (!acc[day]) {
-      acc[day] = item;
+    if (!daysOfWeek[day]) {
+      daysOfWeek[day] = item;
     }
-    return acc;
-  }, {});
+  });
   return Object.values(daysOfWeek);
 };
 
 const SummaryForecast = ({ forecast }) => {
-  const weeklyForecast = filterWeeklyForecast(forecast);
+  const weeklyForecast = useMemo(() => filterWeeklyForecast(forecast), [forecast]);
 
   return (
     <div className="summary-forecast">

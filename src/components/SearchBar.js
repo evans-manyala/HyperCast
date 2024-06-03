@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import Autosuggest from 'react-autosuggest';
 import axios from 'axios';
 import './SearchBar.css';
@@ -10,11 +10,16 @@ const SearchBar = ({ onSearch }) => {
   const [shake, setShake] = useState(false);
   const inputRef = useRef(null);
 
-  useEffect(() => {
-    inputRef.current.focus();
+  // Focus input on mount using callback ref
+  const setFocusRef = useCallback((node) => {
+    if (node) {
+      node.focus();
+    }
+    inputRef.current = node;
   }, []);
 
-  const handleSearch = () => {
+  // Handle search functionality
+  const handleSearch = useCallback(() => {
     if (query.trim() === '') {
       setError(true);
       setShake(true);
@@ -23,31 +28,34 @@ const SearchBar = ({ onSearch }) => {
       setError(false);
       onSearch(query);
     }
-  };
+  }, [query, onSearch]);
 
-  const handleKeyPress = (e) => {
+  // Handle key press (Enter)
+  const handleKeyPress = useCallback((e) => {
     if (e.key === 'Enter') {
       handleSearch();
     }
-  };
+  }, [handleSearch]);
 
-  const handleChange = (e, { newValue }) => {
+  // Handle input change
+  const handleChange = useCallback((e, { newValue }) => {
     setQuery(newValue);
     if (error) {
       setError(false);
     }
-  };
+  }, [error]);
 
-  const onSuggestionsFetchRequested = async ({ value }) => {
+  // Fetch suggestions from API
+  const onSuggestionsFetchRequested = useCallback(async ({ value }) => {
     try {
-      const geocodeApiKey = await axios.get('https://api.opencagedata.com/geocode/v1/json', {
+      const response = await axios.get('https://api.opencagedata.com/geocode/v1/json', {
         params: {
           q: value,
           key: process.env.REACT_APP_OPENCAGE_API_KEY,
           limit: 5,
         },
       });
-      const citySuggestions = geocodeApiKey.data.results.map(result => ({
+      const citySuggestions = response.data.results.map(result => ({
         name: result.components.city || result.components.town || result.components.village || result.components.state || result.formatted,
         country: result.components.country,
       }));
@@ -55,19 +63,22 @@ const SearchBar = ({ onSearch }) => {
     } catch (error) {
       console.error('Error fetching city suggestions:', error);
     }
-  };
+  }, []);
 
-  const onSuggestionsClearRequested = () => {
+  // Clear suggestions
+  const onSuggestionsClearRequested = useCallback(() => {
     setSuggestions([]);
-  };
+  }, []);
 
-  const getSuggestionValue = (suggestion) => `${suggestion.name}, ${suggestion.country}`;
+  // Get suggestion value
+  const getSuggestionValue = useCallback((suggestion) => `${suggestion.name}, ${suggestion.country}`, []);
 
-  const renderSuggestion = (suggestion) => (
+  // Render suggestion
+  const renderSuggestion = useCallback((suggestion) => (
     <div className="suggestion-content">
       {suggestion.name}, {suggestion.country}
     </div>
-  );
+  ), []);
 
   return (
     <div className={`search-bar ${shake ? 'shake' : ''}`}>
@@ -83,7 +94,7 @@ const SearchBar = ({ onSearch }) => {
           onChange: handleChange,
           onKeyPress: handleKeyPress,
           className: error ? 'search-error' : '',
-          ref: inputRef
+          ref: setFocusRef
         }}
         theme={{
           suggestionsContainer: 'react-autosuggest__suggestions-container',
