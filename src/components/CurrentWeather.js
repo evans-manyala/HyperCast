@@ -1,20 +1,24 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import './CurrentWeather.css';
 
+const calculateLocalTime = (timezoneOffset) => {
+  const utcTime = new Date().getTime() + new Date().getTimezoneOffset() * 60000;
+  const localTime = new Date(utcTime + timezoneOffset * 1000);
+  return localTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+};
+
 const CurrentWeather = ({ weather }) => {
-  if (!weather) {
-    return null;
-  }
+  const iconUrl = useMemo(() => {
+    if (!weather) return null;
+    return `http://openweathermap.org/img/wn/${weather.weather[0].icon}.png`;
+  }, [weather]);
 
-  const iconUrl = `http://openweathermap.org/img/wn/${weather.weather[0].icon}.png`;
+  const localTime = useMemo(() => {
+    if (!weather) return null;
+    return calculateLocalTime(weather.timezone);
+  }, [weather]);
 
-  const calculateLocalTime = (timezoneOffset) => {
-    const utcTime = new Date().getTime() + new Date().getTimezoneOffset() * 60000;
-    const localTime = new Date(utcTime + timezoneOffset * 1000);
-    return localTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit'});
-  };
-
-  const localTime = calculateLocalTime(weather.timezone);
+  if (!weather) return null;
 
   return (
     <div className="current-weather">
@@ -23,9 +27,7 @@ const CurrentWeather = ({ weather }) => {
         <img 
           src={iconUrl} 
           alt={weather.weather[0].description} 
-          onError={(e) => {
-            e.target.onerror = null; 
-          }}
+          onError={(e) => { e.target.onerror = null; e.target.src = '/src/components/assets/Error.png'; }}
         />
         <div className="current-weather-details">
           <div>
