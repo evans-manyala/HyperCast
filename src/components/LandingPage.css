@@ -83,7 +83,7 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
   flex: 1 1 calc(33.333% - 2rem);
-  max-width: calc(33.333% - 2rem);
+  max-width: 100%;
   box-sizing: border-box;
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
