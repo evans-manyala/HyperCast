@@ -4,6 +4,12 @@
   font-size: 0.875rem; /* Smaller font size */
 }
 
+.toggle-container {
+  display: flex;
+  justify-content: flex-end; /* Move toggle switches to the right */
+  align-items:flex-end;
+}
+
 .toggle-switch input[type="checkbox"] {
   height: 0;
   width: 0;
@@ -21,7 +27,7 @@
   background: #c6c6c6;
   border-radius: 100px;
   position: relative;
-  transition: background-color 0.2s;
+  transition: background-color 0.1s;
 }
 
 .toggle-switch label::after {
@@ -32,7 +38,7 @@
   width: 16px; /* Smaller toggle */
   height: 16px; /* Smaller toggle */
   border-radius: 90px;
-  transition: 0.2s;
+  transition: 0.1s;
   background: #fff;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
 }

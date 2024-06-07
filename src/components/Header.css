@@ -1,10 +1,10 @@
 /* Header.css */
 
 .header {
-    text-align: center;
+    text-align: left;
     margin: 20px 0;
   }
   
   .header-logo {
-    width: 25%; /* Adjust the logo size */
+    width: 20%; /* Adjust the logo size */
   }

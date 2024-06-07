@@ -15,7 +15,9 @@ import ToggleSwitch from './components/ToggleSwitch';
 import './styles/styles.css';
 import './App.css';
 
+// Main component for the weather application
 const AppContent = () => {
+  // State variables for managing location, weather data, forecast data, status, detailed view, and theme
   const [location, setLocation] = useState('');
   const [weatherData, setWeatherData] = useState(null);
   const [forecastData, setForecastData] = useState([]);
@@ -23,15 +25,19 @@ const AppContent = () => {
   const [showDetailed, setShowDetailed] = useState(false);
   const [theme, setTheme] = useTheme();
 
+  // API key for the weather service
   const weatherApiKey = process.env.REACT_APP_WEATHER_API_KEY;
 
+  // List of cities for random selection
   const cities = useMemo(() => ['Nairobi', 'London', 'New York', 'Tokyo', 'Sydney', 'Paris', 'Berlin', 'Moscow'], []);
 
+  // Function to get a random city from the list
   const getRandomCity = useCallback(() => {
     const randomIndex = Math.floor(Math.random() * cities.length);
     return cities[randomIndex];
   }, [cities]);
 
+  // Function to fetch weather data for a given query (city)
   const fetchWeather = useCallback(async (query) => {
     setStatus({ error: null, loading: true });
     try {
@@ -55,12 +61,13 @@ const AppContent = () => {
       }));
       setForecastData(forecast);
     } catch (err) {
-      setStatus({ error: 'Unable to fetch weather data. Please try again or check name of the location.', loading: false });
+      setStatus({ error: 'Unable to fetch weather data. Please try again or check the name of the location.', loading: false });
     } finally {
       setStatus(prev => ({ ...prev, loading: false }));
     }
   }, [weatherApiKey]);
 
+  // Fetch initial weather data for a random city when the component mounts
   useEffect(() => {
     const fetchInitialWeather = async () => {
       const city = getRandomCity();
@@ -69,6 +76,7 @@ const AppContent = () => {
     fetchInitialWeather();
   }, [fetchWeather, getRandomCity]);
 
+  // Handle search action and fetch weather data for the searched city
   const handleSearch = async (query) => {
     if (!query) {
       setStatus({ error: 'Please enter a city or location', loading: false });
@@ -77,18 +85,22 @@ const AppContent = () => {
     await fetchWeather(query);
   };
 
+  // Toggle detailed view of the forecast
   const handleShowDetailed = () => {
     setShowDetailed(!showDetailed);
   };
 
+  // Toggle theme between dark and light modes
   const toggleTheme = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
+  // Apply the selected theme to the body element
   useEffect(() => {
     document.body.className = theme;
   }, [theme]);
 
+  // Render the main content of the app
   return (
     <div className={`App container ${theme}`}>
       <Header />
@@ -127,9 +139,11 @@ const AppContent = () => {
   );
 };
 
+// Main App component with routing and splash screen handling
 const App = () => {
   const [showSplashScreen, setShowSplashScreen] = useState(true);
 
+  // Display splash screen for 3 seconds on initial load
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowSplashScreen(false);

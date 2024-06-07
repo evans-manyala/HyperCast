@@ -2,28 +2,33 @@ import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react'
 import './DetailedForecast.css';
 import TrendChart from './TrendChart/TrendChart';
 
+// Function to format date string to time
 const getTime = (dateString) => {
   const date = new Date(dateString);
   return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 };
 
+// Component to display detailed weather forecast
 const DetailedForecast = ({ forecast }) => {
-  const [viewDays, setViewDays] = useState(1);
-  const [currentDay, setCurrentDay] = useState('');
-  const [fadeClass, setFadeClass] = useState('fade-in');
-  const containerRef = useRef(null);
-  const forecastRef = useRef([]);
+  const [viewDays, setViewDays] = useState(1); // State to manage the number of days to view
+  const [currentDay, setCurrentDay] = useState(''); // State to manage the current day displayed
+  const [fadeClass, setFadeClass] = useState('fade-in'); // State to manage the fade-in/fade-out class
+  const containerRef = useRef(null); // Ref to the container element for scrolling
+  const forecastRef = useRef([]); // Ref to store forecast day elements
 
+  // Memoized array of unique days in the forecast limited by viewDays
   const days = useMemo(() => 
     [...new Set(forecast.map(item => item.date.split(' ')[0]))].slice(0, viewDays),
     [forecast, viewDays]
   );
 
+  // Memoized filtered forecast for the selected days
   const filteredForecast = useMemo(() => 
     forecast.filter(item => days.includes(item.date.split(' ')[0])),
     [forecast, days]
   );
 
+  // Effect to handle scrolling and updating currentDay
   useEffect(() => {
     const handleScroll = () => {
       const container = containerRef.current;
@@ -31,12 +36,14 @@ const DetailedForecast = ({ forecast }) => {
 
       let newDay = currentDay;
 
+      // Update the current day based on scroll position
       forecastRef.current.forEach(dayElement => {
         if (dayElement && dayElement.offsetTop <= scrollPosition + 100) {
           newDay = dayElement.dataset.day;
         }
       });
 
+      // Update the currentDay state with fade-in/out effect
       if (newDay !== currentDay) {
         setFadeClass('fade-out');
         setTimeout(() => {
@@ -54,16 +61,19 @@ const DetailedForecast = ({ forecast }) => {
     };
   }, [currentDay]);
 
+  // Effect to set the initial currentDay based on the first day in the list
   useEffect(() => {
     if (days.length > 0) {
       setCurrentDay(new Date(days[0]).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' }));
     }
   }, [days]);
 
+  // Handler to change the number of view days
   const handleViewDaysChange = useCallback((days) => {
     setViewDays(days);
   }, []);
 
+  // Component to render the forecast for a single day
   const DayForecast = ({ day, items }) => (
     <div
       key={day}
