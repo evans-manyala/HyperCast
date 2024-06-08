@@ -42,17 +42,26 @@
   font-size: 1.2em;
 }
 
-@media (max-width: 600px) {
-  .current-weather-details {
-    flex-direction: column;
-    align-items: center;
-  }
+.weather-icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 5px;
 }
 
 @media (max-width: 600px) {
   .current-weather-details {
     flex-direction: column;
     align-items: center;
+  }
+
+  .current-weather-card img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .weather-icon {
+    width: 30px;
+    height: 30px;
   }
 }
 

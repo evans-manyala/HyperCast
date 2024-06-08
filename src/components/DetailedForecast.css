@@ -17,6 +17,7 @@
   width: 100%;
   border-collapse: collapse;
   margin: 20px 0;
+  table-layout: auto; /* Allow table to take full width */
 }
 
 .detailed-forecast th,
@@ -26,10 +27,15 @@
   text-align: center;
 }
 
+.detailed-forecast th {
+  background-color: #e3f2fd; /* Light blue background for table headers */
+}
+
 .forecast-buttons {
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
+  flex-wrap: wrap; /* Allow buttons to wrap on small screens */
 }
 
 .forecast-buttons button {
@@ -38,7 +44,7 @@
   border: none;
   border-radius: 4px;
   padding: 10px 20px;
-  margin: 0 5px;
+  margin: 5px; /* Adjusted margin for better spacing on wrap */
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
@@ -47,15 +53,42 @@
   background-color: #0056b3;
 }
 
+/* New styles for the fade transition */
+.forecast-header {
+  position: sticky; /* Change to sticky for better support */
+  top: 0;
+  width: 100%;
+  background-color: inherit;
+  transition: opacity 0.5s ease;
+  z-index: 1;
+}
+
+.fade-in {
+  opacity: 1;
+}
+
+.fade-out {
+  opacity: 0;
+}
+
 @media (max-width: 600px) {
   .detailed-forecast th,
   .detailed-forecast td {
-    font-size: 14px;
-    padding: 8px;
+    font-size: 12px; /* Adjust font size for readability on small screens */
+    padding: 5px; /* Adjust padding for better fit */
   }
 
   .detailed-forecast {
-    padding: 10px;
+    padding: 10px; /* Adjust padding for small screens */
+  }
+
+  .forecast-buttons button {
+    padding: 8px 16px; /* Adjust button padding for small screens */
+    font-size: 14px; /* Adjust font size for buttons */
+  }
+
+  .table-container {
+    max-height: 300px; /* Adjust max-height for small screens */
   }
 }
 
@@ -76,22 +109,4 @@ body.dark .detailed-forecast th {
 
 body.dark .detailed-forecast td {
   background-color: #3a3a3a;
-}
-
-/* New styles for the fade transition */
-.forecast-header {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  background-color: inherit;
-  transition: opacity 0.5s ease;
-  z-index: 1;
-}
-
-.fade-in {
-  opacity: 1;
-}
-
-.fade-out {
-  opacity: 0;
 }

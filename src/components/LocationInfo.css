@@ -1,10 +1,22 @@
+/* Styles for the location information component */
 .location-info {
-    text-align: center;
-    margin-top: 20px;
+  text-align: center; /* Center-align text */
+  margin-top: 20px; /* Add space above the component */
+}
+
+/* Styles for the location heading */
+.location-info h2 {
+  font-size: 1.5em; /* Set font size */
+  margin: 0; /* Remove default margin */
+}
+
+/* Media query for mobile devices */
+@media (max-width: 600px) {
+  .location-info {
+    margin-top: 10px; /* Reduce space above the component on mobile */
   }
-  
+
   .location-info h2 {
-    font-size: 1.5em;
-    margin: 0;
+    font-size: 1.2em; /* Decrease font size on mobile */
   }
-  
+}

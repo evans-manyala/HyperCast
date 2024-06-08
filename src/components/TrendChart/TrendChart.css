@@ -1,69 +1,105 @@
 .trend-chart {
-    margin: 20px;
-    position: relative;
-  }
-  
+  margin: 20px;
+  position: relative;
+}
+
+.chart-container {
+  height: 60vh; /* Use viewport height to ensure the chart adapts to screen size */
+  overflow: hidden;
+  border: 1px solid #ddd;
+  padding: 10px;
+  background-color: #fff; /* Ensure background is white for better visibility */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chart-container canvas {
+  width: 100% !important;
+  height: 100% !important; /* Ensure the canvas scales correctly */
+}
+
+.zoom-buttons {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.zoom-buttons button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  padding: 5px 10px;
+  font-size: 1.2em; /* Increase font size for visibility */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 35px; /* Adjust width and height for minimalistic size */
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.zoom-buttons button:hover {
+  background-color: #0056b3;
+}
+
+body.dark .chart-container {
+  background-color: #2a2a2a;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+body.dark .chart-container canvas {
+  border: 1px solid #444;
+}
+
+body.dark .zoom-buttons button {
+  background-color: #0056b3;
+  color: white;
+}
+
+body.dark .zoom-buttons button:hover {
+  background-color: #003f7f;
+}
+
+/* Media queries for responsive design */
+@media (max-width: 768px) {
   .chart-container {
-    height: 600px; /* Ensure enough height to accommodate the chart and its legend */
-    overflow: hidden;
-    border: 1px solid #ddd;
-    padding: 10px;
-    background-color: #fff; /* Ensure background is white for better visibility */
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .chart-container canvas {
-    width: 100% !important;
-    height: auto !important;
+    height: 50vh; /* Reduce height for medium screens */
   }
   
   .zoom-buttons {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    display: flex;
-    gap: 10px;
+    bottom: 5px;
+    right: 5px;
+    gap: 5px;
   }
-  
+
   .zoom-buttons button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    padding: 5px 10px;
-    font-size: 1.2em; /* Increase font size for visibility */
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    width: 35px; /* Adjust width and height for minimalistic size */
-    height: 35px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 30px; /* Adjust button size for smaller screens */
+    height: 30px;
+    font-size: 1em; /* Adjust font size for smaller screens */
   }
-  
-  .zoom-buttons button:hover {
-    background-color: #0056b3;
+}
+
+@media (max-width: 480px) {
+  .chart-container {
+    height: 40vh; /* Further reduce height for small screens */
   }
-  
-  body.dark .chart-container {
-    background-color: #2a2a2a;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+
+  .zoom-buttons {
+    bottom: 5px;
+    right: 5px;
+    gap: 5px;
   }
-  
-  body.dark .chart-container canvas {
-    border: 1px solid #444;
+
+  .zoom-buttons button {
+    width: 25px; /* Further adjust button size for smaller screens */
+    height: 25px;
+    font-size: 0.8em; /* Adjust font size for smaller screens */
   }
-  
-  body.dark .zoom-buttons button {
-    background-color: #0056b3;
-    color: white;
-  }
-  
-  body.dark .zoom-buttons button:hover {
-    background-color: #003f7f;
-  }
-  
+}

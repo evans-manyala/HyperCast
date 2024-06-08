@@ -6,7 +6,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  margin-bottom: 20px; /* Adjust this value to align with header logo */
+}
+
+.toggle-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 1200px;
 }
 
 .checkbox-container {
