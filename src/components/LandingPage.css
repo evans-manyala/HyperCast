@@ -44,12 +44,14 @@ body {
 .landing-main h1 {
   font-size: 2.5rem;
   margin-bottom: 20px;
+  text-align: justify;
 }
 
 .landing-main p {
   font-size: 1.2rem;
   margin-bottom: 20px;
   color: #666;
+  text-align: justify;
 }
 
 .project-inspiration,
@@ -59,6 +61,7 @@ body {
   width: 100%;
   padding: 0 20px;
   box-sizing: border-box;
+  text-align: justify; /* Justify text in Key Features and Inspiration sections */
 }
 
 .project-inspiration h2,
@@ -83,7 +86,6 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
   flex: 1 1 calc(33.333% - 2rem);
-  min-width: 350px;
   max-width: 100%;
   box-sizing: border-box;
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
@@ -114,8 +116,8 @@ body {
 .developer-info {
   width: 100%;
   padding: 0 20px;
-  text-align: justify;
   box-sizing: border-box;
+  text-align: justify; /* Justify text in Developer Info section */
 }
 
 .developer-info h2 {
@@ -128,6 +130,11 @@ body {
 .developer-info p {
   font-size: 1.1rem;
   color: #666;
+}
+
+.welcome-section,
+.inspiration-section {
+  text-align: justify; /* Justify text in Welcome and Inspiration sections */
 }
 
 .landing-actions {

@@ -104,6 +104,9 @@ const AppContent = () => {
   return (
     <div className={`App container ${theme}`}>
       <Header />
+      <div className="search-container">
+        <SearchBar onSearch={handleSearch} error={status.error} />
+      </div>
       <div className="toggle-container">
         <ToggleSwitch
           id="theme-toggle"
@@ -118,9 +121,6 @@ const AppContent = () => {
           onChange={handleShowDetailed}
           label="Detailed Forecast"
         />
-      </div>
-      <div className="search-container">
-        <SearchBar onSearch={handleSearch} error={status.error} />
       </div>
       {status.loading && <div className="loading">Loading...</div>}
       {status.error && <ErrorDisplay message={status.error} />}
