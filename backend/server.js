@@ -1,10 +1,14 @@
-const app = require('./src/app');
-const port = process.env.PORT || 5000;
+const express = require('express');
 const connectDB = require('./config/db');
+const app = express();
 
-// Connect to MongoDB
+// Connect to database
 connectDB();
 
-app.listen(port, () => {
-  console.log(`Backend server running on port ${port}`);
-});
+// Middleware and routes
+app.use(express.json());
+app.use('/api/weather', require('./src/routes/weatherRoutes'));
+app.use('/api/users', require('./src/routes/userRoutes'));
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
