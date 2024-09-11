@@ -3,7 +3,7 @@
 - This project aims to provide users with a quick and convenient way to access current weather conditions and forecasts.
 - FrontEnd: REACT, JavaScript, CSS and HTML to build an intuitive UI/UX for the App.
 - BackEnd: JavaScript for code, as well as APIs from [OpenWeatherMAP](https://openweathermap.org/) for weather data, [OpenCageData](https://opencagedata.com/) for geo-location data and auto-suggestion of locations/places
-- Deployment: Using [Render](https://render.com) to create a CI/CD pipeline for deploying new featuresof the app upon code submission into github. I have also used [ngrok](https://ngrok.com/) to portforward my app to external users to test and provide me with feedback.
+- Deployment: Using [Render](https://vercel.com) to create a CI/CD pipeline for deploying new features of the app upon code submission into GitHub. I have also used [ngrok](https://ngrok.com/) to port-forward my app to external users to test and provide me with feedback.
 
 # Getting Started with Create React App
 
@@ -45,3 +45,44 @@ If you aren't satisfied with the build tool and configuration choices, you can `
 Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
 You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+
+## DIRECTORY STRUCTURE
+
+- Frontend
+  - Folder: frontend - public/: Contains assets related to the frontend - favicon.ico - hypercast-favicon.png - index.html - manifest.json - robots.txt - src/: Source code for the React frontend
+    App.js: Main application component
+    Locationinfo.js: Component to display location information
+    assets/: Contains images and fonts for the frontend UI
+    Images like day-background.jpg, night-background.jpg, etc.
+    Fonts like BIZ UDGothic.ttf, BIZ UDPMincho.ttf
+    components/: UI components used throughout the app
+    CurrentWeather.js: Displays the current weather
+    DetailedForecast.js: Provides a detailed weather forecast
+    Header.js: The header component
+    SearchBar.js: Search bar for location input
+    SplashScreen.js: Initial splash screen component
+    TrendChart.js: Displays weather trend charts
+    Many others...
+    contexts/: Context providers, like ThemeContext.js
+    hooks/: Custom hooks, e.g., useTheme.js
+    styles/: Centralized CSS styles
+    styles.css: Overall app styling
+    Config Files
+
+docker-compose.yml: Docker configurations for deployment
+nginx.conf: NGINX server configuration
+Backend
+Folder: backend
+config/: Database configuration
+db.js: Handles the connection to the database
+middlewares/: Contains middleware logic
+src/: Backend logic
+app.js: Entry point for the backend
+controllers/: API controllers
+weatherController.js: Manages weather data retrieval logic
+routes/: API routes
+weatherRoutes.js: Defines routes for weather-related data
+models/: Database models
+Config Files
+package.json: Node.js package configurations
+docker-compose.yml: Docker configuration for backend services

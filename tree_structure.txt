@@ -1,0 +1,91 @@
+.
+├── Dockerfile
+├── README.md
+├── backend
+│   ├── config
+│   │   └── db.js
+│   ├── middlewares
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── server.js
+│   └── src
+│       ├── app.js
+│       ├── controllers
+│       │   └── weatherController.js
+│       ├── models
+│       └── routes
+│           └── weatherRoutes.js
+├── docker-compose.yml
+├── frontend
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── public
+│   │   ├── favicon.ico
+│   │   ├── hypercast-favicon.png
+│   │   ├── hypercast-favicon.textClipping
+│   │   ├── index.html
+│   │   ├── logo192.png
+│   │   ├── logo512.png
+│   │   ├── manifest.json
+│   │   └── robots.txt
+│   └── src
+│       ├── App.css
+│       ├── App.js
+│       ├── App.test.js
+│       ├── Locationinfo.js
+│       ├── assets
+│       │   ├── Error.png
+│       │   ├── Gear.svg
+│       │   ├── Lightning.svg
+│       │   ├── SmilingSun.png
+│       │   ├── day-background.jpg
+│       │   ├── fonts
+│       │   │   ├── BIZ UDGothic.ttf
+│       │   │   └── BIZ UDPMincho.ttf
+│       │   ├── github.png
+│       │   ├── logo.png
+│       │   ├── logo.svg
+│       │   ├── night-background.jpg
+│       │   ├── process.png
+│       │   └── quick.png
+│       ├── components
+│       │   ├── CurrentWeather.css
+│       │   ├── CurrentWeather.js
+│       │   ├── DetailedForecast.css
+│       │   ├── DetailedForecast.js
+│       │   ├── ErrorDisplay.js
+│       │   ├── Header.css
+│       │   ├── Header.js
+│       │   ├── LandingPage.css
+│       │   ├── LandingPage.js
+│       │   ├── LocationInfo.css
+│       │   ├── LocationInfo.js
+│       │   ├── SearchBar.css
+│       │   ├── SearchBar.js
+│       │   ├── SplashScreen.css
+│       │   ├── SplashScreen.js
+│       │   ├── SummaryForecast.css
+│       │   ├── SummaryForecast.js
+│       │   ├── ThemeToggleSwitch.css
+│       │   ├── ThemeToggleSwitch.js
+│       │   ├── ToggleSwitch.css
+│       │   ├── ToggleSwitch.js
+│       │   └── TrendChart
+│       │       ├── TrendChart.css
+│       │       └── TrendChart.js
+│       ├── contexts
+│       │   └── ThemeContext.js
+│       ├── hooks
+│       │   └── useTheme.js
+│       ├── index.css
+│       ├── index.js
+│       ├── logo.svg
+│       ├── reportWebVitals.js
+│       ├── setupTests.js
+│       └── styles
+│           └── styles.css
+├── nginx.conf
+├── shared
+└── tree_structure.txt
+
+19 directories, 70 files

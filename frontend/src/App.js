@@ -25,8 +25,8 @@ const AppContent = () => {
   const [showDetailed, setShowDetailed] = useState(false);
   const [theme, setTheme] = useTheme();
 
-  // API key for the weather service
-  const weatherApiKey = process.env.REACT_APP_WEATHER_API_KEY;
+  // API endpoint for the backend server
+  const backendApiUrl = process.env.REACT_APP_BACKEND_API_URL;
 
   // List of cities for random selection
   const cities = useMemo(() => ['Nairobi', 'London', 'New York', 'Tokyo', 'Sydney', 'Paris', 'Berlin', 'Moscow'], []);
@@ -42,22 +42,22 @@ const AppContent = () => {
     setStatus({ error: null, loading: true });
     try {
       const [weatherResponse, forecastResponse] = await Promise.all([
-        axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${query}&units=metric&appid=${weatherApiKey}`),
-        axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${query}&units=metric&appid=${weatherApiKey}`),
+        axios.get(`${backendApiUrl}/api/weather/current?city=${query}`),
+        axios.get(`${backendApiUrl}/api/weather/forecast?city=${query}`)
       ]);
 
-      setLocation(`${weatherResponse.data.name}, ${weatherResponse.data.sys.country}`);
+      setLocation(`${weatherResponse.data.name}, ${weatherResponse.data.country}`);
       setWeatherData(weatherResponse.data);
 
-      const forecast = forecastResponse.data.list.map(item => ({
-        date: item.dt_txt,
-        temp: item.main.temp,
-        weather: item.weather[0].main,
-        weatherIcon: item.weather[0].icon,
-        cloudCover: item.clouds.all,
-        windSpeed: item.wind.speed,
-        pressure: item.main.pressure,
-        humidity: item.main.humidity,
+      const forecast = forecastResponse.data.map(item => ({
+        date: item.date,
+        temp: item.temp,
+        weather: item.weather,
+        weatherIcon: item.weatherIcon,
+        cloudCover: item.cloudCover,
+        windSpeed: item.windSpeed,
+        pressure: item.pressure,
+        humidity: item.humidity,
       }));
       setForecastData(forecast);
     } catch (err) {
@@ -65,7 +65,7 @@ const AppContent = () => {
     } finally {
       setStatus(prev => ({ ...prev, loading: false }));
     }
-  }, [weatherApiKey]);
+  }, [backendApiUrl]);
 
   // Fetch initial weather data for a random city when the component mounts
   useEffect(() => {
