@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import './CurrentWeather.css';
 
 // Function to calculate local time based on timezone offset
@@ -9,20 +9,42 @@ const calculateLocalTime = (timezoneOffset) => {
 };
 
 // Component to display current weather information
-const CurrentWeather = ({ weather }) => {
+const CurrentWeather = () => {
+  const [weather, setWeather] = useState(null); // State to store weather data
+  const [loading, setLoading] = useState(true); // Loading state
+
+  // Fetch weather data from the backend when the component mounts
+  useEffect(() => {
+    const fetchWeather = async () => {
+      try {
+        const response = await fetch('/api/weather'); // Request to backend
+        const data = await response.json(); // Parse JSON response
+        setWeather(data); // Update weather state with fetched data
+        setLoading(false); // Set loading to false
+      } catch (error) {
+        console.error('Error fetching weather:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchWeather();
+  }, []);
+
   // Memoize the icon URL to avoid unnecessary recalculations
   const iconUrl = useMemo(() => {
-    if (!weather) return null; // Return null if weather data is not available
-    return `http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`; // Generate icon URL
+    if (!weather) return null;  // Return null if weather data is not available
+    return `http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`;  // Generate icon URL
   }, [weather]);
 
   // Memoize the local time to avoid unnecessary recalculations
   const localTime = useMemo(() => {
-    if (!weather) return null; // Return null if weather data is not available
+    if (!weather) return null;  // Return null if weather data is not available
     return calculateLocalTime(weather.timezone); // Calculate local time based on timezone offset
   }, [weather]);
 
-  if (!weather) return null; // Return null if weather data is not available
+  if (loading) return <p>Loading...</p>; // Show loading spinner while fetching data
+
+  if (!weather) return <p>Error fetching weather data</p>; // Handle error state
 
   // Render the current weather information
   return (
@@ -31,8 +53,8 @@ const CurrentWeather = ({ weather }) => {
         <h2>Current Weather</h2>
         <img 
           src={iconUrl} 
-          alt={weather.weather[0].description} 
-          onError={(e) => { e.target.onerror = null; e.target.src = '/src/components/assets/Error.png'; }} // Fallback image on error
+          alt={weather.weather[0].description}
+          onError={(e) => { e.target.onerror = null; e.target.src = '/src/components/assets/Error.png'; }}  // Fallback image on error
         />
         <div className="current-weather-details">
           <div>

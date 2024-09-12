@@ -1,7 +1,9 @@
 const express = require('express');
-const { getWeather } = require('../controllers/weatherController');
+const { getWeatherData, savePreferences } = require('../controllers/weatherController');
+const { protect } = require('../middlewares/authMiddleware');
 const router = express.Router();
 
-router.get('/:location', getWeather);
+router.post('/weather', getWeatherData); // POST route for fetching weather data
+router.post('/preferences', protect, savePreferences); // POST route for saving preferences
 
 module.exports = router;
