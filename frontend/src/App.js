@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import Login from './components/Login';
+import Preferences from './components/Preferences';
+//import AppContent from './components/AppContent'; // Your main weather app content
+
 import axios from 'axios';
 import SearchBar from './components/SearchBar';
 import LocationInfo from './components/LocationInfo';
@@ -142,6 +146,7 @@ const AppContent = () => {
 // Main App component with routing and splash screen handling
 const App = () => {
   const [showSplashScreen, setShowSplashScreen] = useState(true);
+  const [user, setUser] = useState(null);
 
   // Display splash screen for 3 seconds on initial load
   useEffect(() => {

@@ -8,16 +8,24 @@ const calculateLocalTime = (timezoneOffset) => {
   return localTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // Format local time
 };
 
-// Component to display current weather information
 const CurrentWeather = () => {
   const [weather, setWeather] = useState(null); // State to store weather data
   const [loading, setLoading] = useState(true); // Loading state
+
+  const location = 'New York'; // Example: You can change this to a dynamic value
 
   // Fetch weather data from the backend when the component mounts
   useEffect(() => {
     const fetchWeather = async () => {
       try {
-        const response = await fetch('/api/weather'); // Request to backend
+        const response = await fetch('/api/weather', {
+          method: 'POST', // Use POST as the backend expects
+          headers: {
+            'Content-Type': 'application/json', // Send JSON data
+          },
+          body: JSON.stringify({ location }), // Send location in the request body
+        });
+
         const data = await response.json(); // Parse JSON response
         setWeather(data); // Update weather state with fetched data
         setLoading(false); // Set loading to false
@@ -28,18 +36,18 @@ const CurrentWeather = () => {
     };
 
     fetchWeather();
-  }, []);
+  }, [location]); // Dependency array includes location
 
   // Memoize the icon URL to avoid unnecessary recalculations
   const iconUrl = useMemo(() => {
-    if (!weather) return null;  // Return null if weather data is not available
-    return `http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`;  // Generate icon URL
+    if (!weather) return null;
+    return `http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`;
   }, [weather]);
 
   // Memoize the local time to avoid unnecessary recalculations
   const localTime = useMemo(() => {
-    if (!weather) return null;  // Return null if weather data is not available
-    return calculateLocalTime(weather.timezone); // Calculate local time based on timezone offset
+    if (!weather) return null;
+    return calculateLocalTime(weather.timezone);
   }, [weather]);
 
   if (loading) return <p>Loading...</p>; // Show loading spinner while fetching data
@@ -54,7 +62,7 @@ const CurrentWeather = () => {
         <img 
           src={iconUrl} 
           alt={weather.weather[0].description}
-          onError={(e) => { e.target.onerror = null; e.target.src = '/src/components/assets/Error.png'; }}  // Fallback image on error
+          onError={(e) => { e.target.onerror = null; e.target.src = '/src/components/assets/Error.png'; }}
         />
         <div className="current-weather-details">
           <div>
