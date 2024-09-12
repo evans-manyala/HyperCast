@@ -10,7 +10,7 @@ const userSchema = mongoose.Schema({
   timestamps: true,
 });
 
-// Password Encyption middleware
+// Password Encryption middleware
 userSchema.pre('save', async function(next) {
   if (!this.isModified('password')) {
     next();
