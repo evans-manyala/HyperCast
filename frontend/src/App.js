@@ -20,7 +20,7 @@ import './styles/styles.css';
 import './App.css';
 
 // Main component for the weather application
-const AppContent = () => {
+const AppContent = ({ user }) => {
   // State variables for managing location, weather data, forecast data, status, detailed view, and theme
   const [location, setLocation] = useState('');
   const [weatherData, setWeatherData] = useState(null);
@@ -46,8 +46,12 @@ const AppContent = () => {
     setStatus({ error: null, loading: true });
     try {
       const [weatherResponse, forecastResponse] = await Promise.all([
-        axios.get(`${backendApiUrl}/api/weather/current?city=${query}`),
-        axios.get(`${backendApiUrl}/api/weather/forecast?city=${query}`)
+        axios.get(`${backendApiUrl}/api/weather/current?city=${query}`, {
+          headers: { Authorization: `Bearer ${user.token}` },
+        }),
+        axios.get(`${backendApiUrl}/api/weather/forecast?city=${query}`, {
+          headers: { Authorization: `Bearer ${user.token}` },
+        })
       ]);
 
       setLocation(`${weatherResponse.data.name}, ${weatherResponse.data.country}`);
@@ -69,7 +73,7 @@ const AppContent = () => {
     } finally {
       setStatus(prev => ({ ...prev, loading: false }));
     }
-  }, [backendApiUrl]);
+  }, [backendApiUrl, user.token]);
 
   // Fetch initial weather data for a random city when the component mounts
   useEffect(() => {
@@ -143,7 +147,7 @@ const AppContent = () => {
   );
 };
 
-// Main App component with routing and splash screen handling
+// Main App component with routing, login and splash screen handling
 const App = () => {
   const [showSplashScreen, setShowSplashScreen] = useState(true);
   const [user, setUser] = useState(null);
@@ -164,9 +168,19 @@ const App = () => {
           <Route path="/" element={<SplashScreen />} />
         ) : (
           <>
-            <Route path="/" element={<Navigate to="/landing" />} />
-            <Route path="/landing" element={<LandingPage />} />
-            <Route path="/app" element={<AppContent />} />
+            {!user ? (
+              <>
+              <Route path="/" element={<Navigate to="/login" />} />
+              <Route path="/login" element={<Login setUser={setUser} />} />
+              </>
+              ) : (
+              <>
+              <Route path="/" element={<Navigate to="/landing" />} />
+              <Route path="/landing" element={<LandingPage />} />
+              <Route path="/app" element={<AppContent user={user} />} />
+              <Route path="/preferences" element={<Preferences user={user} />} />
+              </>
+            )}
           </>
         )}
       </Routes>
