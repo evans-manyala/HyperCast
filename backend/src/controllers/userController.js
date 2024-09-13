@@ -54,4 +54,35 @@ const authUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, authUser };
+// Fetch user profile
+const getUserProfile = async (req, res) => {
+  const user = await User.findById(req.user.id);
+  
+  if (user) {
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      preferences: user.preferences,
+    });
+  } else {
+    res.status(404).json({ message: 'User not found' });
+  }
+};
+
+// Update user preferences
+const updateUserPreferences = async (req, res) => {
+  const { preferences } = req.body;
+  
+  const user = await User.findById(req.user.id);
+  
+  if (user) {
+    user.preferences = preferences;
+    await user.save();
+    res.json({ message: 'Preferences updated', preferences: user.preferences });
+  } else {
+    res.status(404).json({ message: 'User not found' });
+  }
+};
+
+module.exports = { registerUser, authUser, getUserProfile, updateUserPreferences };
